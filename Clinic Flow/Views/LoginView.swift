@@ -195,6 +195,9 @@ struct LoginView: View {
             .navigationDestination(isPresented: $navigateToDashboard) {
                 DashboardView()
             }
+            .navigationDestination(isPresented: $navigateToAppointmentLogin) {
+                AppointmentLoginView()
+            }
         }
     }
     
