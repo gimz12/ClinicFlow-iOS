@@ -417,7 +417,7 @@ struct QueueStatusView: View {
             // Cancel Queue and Skip to Next
             HStack(spacing: 12) {
                 Button {
-                    // Handle cancel queue
+                    dismiss()
                 } label: {
                     Text("Cancel Queue")
                         .font(.system(size: 15, weight: .semibold))
