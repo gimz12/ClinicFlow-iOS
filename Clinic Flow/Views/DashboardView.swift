@@ -67,6 +67,7 @@ private let navy = Color(red: 0.13, green: 0.27, blue: 0.40)
 
 struct DashboardView: View {
     @State private var selectedTab: Int = 0
+    @State private var navigateToQueueStatus: Bool = false
 
     let appointments: [Appointment] = [
         Appointment(month: "FEB", day: 28, dayName: "Thu",
@@ -148,6 +149,9 @@ struct DashboardView: View {
             }
         }
         .ignoresSafeArea(edges: .top)
+        .fullScreenCover(isPresented: $navigateToQueueStatus) {
+            QueueStatusView(isPresented: $navigateToQueueStatus)
+        }
         .background(Color(.systemGroupedBackground))
         .overlay(alignment: .bottom) {
             // Bottom action bar (above tab bar)
@@ -420,7 +424,9 @@ struct DashboardView: View {
             .background(Color.white.opacity(0.1))
             .cornerRadius(10)
 
-            Button("View Queue Details") {}
+            Button("View Queue Details") {
+                navigateToQueueStatus = true
+            }
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundColor(navy)
                 .frame(maxWidth: .infinity)

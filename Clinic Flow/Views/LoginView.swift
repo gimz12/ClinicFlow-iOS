@@ -1,63 +1,131 @@
 import SwiftUI
 
 struct LoginView: View {
-    @State private var phoneNumber: String = ""
-    @State private var navigateToOTP: Bool = false
+    @State private var patientID: String = ""
+    @State private var password: String = ""
+    @State private var rememberMe: Bool = false
+    @State private var showPassword: Bool = false
+    @State private var navigateToSignUp: Bool = false
+    @State private var navigateToAppointmentLogin: Bool = false
+    @State private var navigateToDashboard: Bool = false
     @Environment(\.dismiss) private var dismiss
+    
+    private let primaryColor = Color(red: 0.13, green: 0.27, blue: 0.40)
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 0) {
+                VStack(spacing: 0) {
+                    // Logo Icon
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(primaryColor)
+                            .frame(width: 70, height: 70)
+                        
+                        Image(systemName: "plus")
+                            .font(.system(size: 28, weight: .medium))
+                            .foregroundColor(.white)
+                    }
+                    .padding(.top, 60)
+                    .padding(.bottom, 24)
+                    
                     // Header
-                    VStack(alignment: .leading, spacing: 8) {
+                    VStack(spacing: 8) {
                         Text("Welcome Back")
-                            .font(.system(size: 32, weight: .bold))
+                            .font(.system(size: 28, weight: .bold))
                             .foregroundColor(.primary)
-
-                        Text("Sign in to continue your visit")
+                        
+                        Text("Sign in to access your account")
                             .font(.system(size: 16))
                             .foregroundColor(.secondary)
                     }
-                    .padding(.top, 32)
                     .padding(.bottom, 32)
-
-                    // Phone Number Field
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("PHONE NUMBER")
-                            .font(.system(size: 13, weight: .semibold))
-                            .foregroundColor(.primary)
-                            .tracking(0.5)
-
-                        TextField("Enter your Phone number", text: $phoneNumber)
+                    
+                    // Form Fields
+                    VStack(alignment: .leading, spacing: 20) {
+                        // Patient ID Field
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("PATIENT ID")
+                                .font(.system(size: 13, weight: .semibold))
+                                .foregroundColor(.primary)
+                                .tracking(0.5)
+                            
+                            TextField("Enter your patient ID", text: $patientID)
+                                .textFieldStyle(.plain)
+                                .padding()
+                                .background(Color(.systemGray6))
+                                .cornerRadius(12)
+                                .autocapitalization(.none)
+                        }
+                        
+                        // Password Field
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("PASSWORD")
+                                .font(.system(size: 13, weight: .semibold))
+                                .foregroundColor(.primary)
+                                .tracking(0.5)
+                            
+                            HStack {
+                                if showPassword {
+                                    TextField("Enter your password", text: $password)
+                                } else {
+                                    SecureField("Enter your password", text: $password)
+                                }
+                                
+                                Button {
+                                    showPassword.toggle()
+                                } label: {
+                                    Image(systemName: showPassword ? "eye.slash" : "eye")
+                                        .foregroundColor(.secondary)
+                                }
+                            }
+                            .textFieldStyle(.plain)
                             .padding()
                             .background(Color(.systemGray6))
                             .cornerRadius(12)
-                            .keyboardType(.numberPad)
-
-                        Text("We'll send a verification code to your phone number")
-                            .font(.system(size: 14))
-                            .foregroundColor(.secondary)
-                            .padding(.top, 4)
-                    }
-                    .padding(.bottom, 28)
-
-                    // Continue Button
-                    Button {
-                        if !phoneNumber.isEmpty {
-                            navigateToOTP = true
                         }
+                        
+                        // Remember Me & Forgot Password Row
+                        HStack {
+                            Button {
+                                rememberMe.toggle()
+                            } label: {
+                                HStack(spacing: 6) {
+                                    Image(systemName: rememberMe ? "checkmark.square.fill" : "square")
+                                        .foregroundColor(rememberMe ? primaryColor : .secondary)
+                                    Text("Remember me")
+                                        .foregroundColor(.secondary)
+                                }
+                                .font(.system(size: 14))
+                            }
+                            
+                            Spacer()
+                            
+                            Button("Forgot Password?") {
+                                // Handle forgot password
+                            }
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundColor(primaryColor)
+                        }
+                    }
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 24)
+                    
+                    // Sign In Button
+                    Button {
+                        handleSignIn()
                     } label: {
-                        Text("Continue")
+                        Text("Sign In")
                             .font(.system(size: 17, weight: .semibold))
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 18)
-                            .background(Color(red: 0.13, green: 0.27, blue: 0.40))
+                            .background(primaryColor)
                             .cornerRadius(14)
                     }
+                    .padding(.horizontal, 24)
                     .padding(.bottom, 24)
-
+                    
                     // OR Divider
                     HStack {
                         Rectangle()
@@ -71,13 +139,14 @@ struct LoginView: View {
                             .frame(height: 1)
                             .foregroundColor(Color(.systemGray4))
                     }
+                    .padding(.horizontal, 24)
                     .padding(.bottom, 24)
-
-                    // Sign in Using Patient ID Button
+                    
+                    // Sign in Using Appointment Number Button
                     Button {
-                        // Handle Patient ID sign in
+                        navigateToAppointmentLogin = true
                     } label: {
-                        Text("Sign in Using Patient ID")
+                        Text("Sign in using Appointment Number")
                             .font(.system(size: 17, weight: .semibold))
                             .foregroundColor(.primary)
                             .frame(maxWidth: .infinity)
@@ -89,21 +158,22 @@ struct LoginView: View {
                                     .stroke(Color(.systemGray4), lineWidth: 1)
                             )
                     }
+                    .padding(.horizontal, 24)
                     .padding(.bottom, 32)
-
+                    
                     // Footer Links
                     VStack(spacing: 16) {
                         HStack(spacing: 4) {
                             Text("Don't have an account?")
                                 .foregroundColor(.secondary)
                             Button("Sign Up") {
-                                // Handle sign up
+                                navigateToSignUp = true
                             }
                             .fontWeight(.semibold)
-                            .foregroundColor(Color(red: 0.13, green: 0.27, blue: 0.40))
+                            .foregroundColor(primaryColor)
                         }
                         .font(.system(size: 15))
-
+                        
                         HStack(spacing: 4) {
                             Text("Need assistance?")
                                 .foregroundColor(.secondary)
@@ -111,33 +181,30 @@ struct LoginView: View {
                                 // Handle contact
                             }
                             .fontWeight(.semibold)
-                            .foregroundColor(Color(red: 0.13, green: 0.27, blue: 0.40))
+                            .foregroundColor(primaryColor)
                         }
                         .font(.system(size: 15))
                     }
-                    .frame(maxWidth: .infinity)
-                }
-                .padding(.horizontal, 24)
-            }
-            .navigationTitle("Sign In")
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarBackButtonHidden(true)
-            .navigationDestination(isPresented: $navigateToOTP) {
-                OTPView(phoneNumber: phoneNumber)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        HStack(spacing: 4) {
-                            Image(systemName: "chevron.left")
-                            Text("Back")
-                        }
-                        .foregroundColor(Color(red: 0.13, green: 0.27, blue: 0.40))
-                    }
+                    .padding(.bottom, 32)
                 }
             }
+            .navigationBarHidden(true)
+            .navigationDestination(isPresented: $navigateToSignUp) {
+                SignUpView()
+            }
+            .navigationDestination(isPresented: $navigateToDashboard) {
+                DashboardView()
+            }
+            .navigationDestination(isPresented: $navigateToAppointmentLogin) {
+                AppointmentLoginView()
+            }
+        }
+    }
+    
+    private func handleSignIn() {
+        // Handle sign in logic
+        if !patientID.isEmpty && !password.isEmpty {
+            navigateToDashboard = true
         }
     }
 }
