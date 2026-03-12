@@ -16,6 +16,7 @@ struct PaymentView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showSuccess: Bool = false
     @State private var shouldDismissToDashboard: Bool = false
+    @State private var showAddCard: Bool = false
     
     private let navy = Color(red: 0.13, green: 0.27, blue: 0.40)
     private let lightBlue = Color(red: 0.88, green: 0.93, blue: 0.97)
@@ -293,7 +294,7 @@ struct PaymentView: View {
                 
                 // Add New Card
                 Button(action: {
-                    // Add new card action
+                    showAddCard = true
                 }) {
                     HStack(spacing: 12) {
                         ZStack {
@@ -323,6 +324,9 @@ struct PaymentView: View {
                         RoundedRectangle(cornerRadius: 12)
                             .stroke(Color(.systemGray4), lineWidth: 1)
                     )
+                }
+                .navigationDestination(isPresented: $showAddCard) {
+                    AddPaymentMethodView()
                 }
             }
         }
