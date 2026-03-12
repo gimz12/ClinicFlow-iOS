@@ -67,6 +67,10 @@ private let navy = Color(red: 0.13, green: 0.27, blue: 0.40)
 
 struct DashboardView: View {
     @State private var selectedTab: Int = 0
+    @State private var showBookAppointment: Bool = false
+    @State private var showAppointmentDetails: Bool = false
+    @State private var showRescheduleAppointment: Bool = false
+    @State private var showNavigation: Bool = false
 
     let appointments: [Appointment] = [
         Appointment(month: "FEB", day: 28, dayName: "Thu",
@@ -116,7 +120,9 @@ struct DashboardView: View {
                 }
                 .tag(0)
 
-            Text("Navigate")
+            IndoorNavigationView(onNavigateToDashboard: {
+                selectedTab = 0
+            })
                 .tabItem {
                     Label("Navigate", systemImage: "location.fill")
                 }
@@ -309,9 +315,16 @@ struct DashboardView: View {
                 Text("Upcoming Appointments")
                     .font(.system(size: 17, weight: .bold))
                 Spacer()
-                Button("Book New") {}
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundColor(navy)
+                Button(action: {
+                    showBookAppointment = true
+                }) {
+                    Text("Book New")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundColor(navy)
+                }
+                .navigationDestination(isPresented: $showBookAppointment) {
+                    BookAppointmentView()
+                }
             }
 
             ForEach(appointments) { appt in
@@ -360,19 +373,33 @@ struct DashboardView: View {
             }
 
             HStack(spacing: 10) {
-                Button("View Details") {}
+                Button("View Details") {
+                    showAppointmentDetails = true
+                }
                     .font(.system(size: 14, weight: .semibold))
                     .foregroundColor(navy)
                     .padding(.vertical, 8)
                     .frame(maxWidth: .infinity)
                     .overlay(RoundedRectangle(cornerRadius: 8).stroke(navy, lineWidth: 1))
+                    .navigationDestination(isPresented: $showAppointmentDetails) {
+                        AppointmentDetailsView(onDismissToDashboard: {
+                            showAppointmentDetails = false
+                        })
+                    }
 
-                Button("Reschedule") {}
+                Button("Reschedule") {
+                    showRescheduleAppointment = true
+                }
                     .font(.system(size: 14, weight: .semibold))
                     .foregroundColor(.secondary)
                     .padding(.vertical, 8)
                     .frame(maxWidth: .infinity)
                     .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color(.systemGray4), lineWidth: 1))
+                    .navigationDestination(isPresented: $showRescheduleAppointment) {
+                        RescheduleAppointmentView(onDismissToDashboard: {
+                            showRescheduleAppointment = false
+                        })
+                    }
             }
         }
         .padding(16)
@@ -482,13 +509,20 @@ struct DashboardView: View {
                         Spacer()
 
                         if item.status == .inProgress && item.title == "Consultation" {
-                            Button("Navigate") {}
+                            Button("Navigate") {
+                                showNavigation = true
+                            }
                                 .font(.system(size: 12, weight: .semibold))
                                 .foregroundColor(.white)
                                 .padding(.horizontal, 12)
                                 .padding(.vertical, 6)
                                 .background(navy)
                                 .cornerRadius(8)
+                                .navigationDestination(isPresented: $showNavigation) {
+                                    IndoorNavigationView(onNavigateToDashboard: {
+                                        showNavigation = false
+                                    })
+                                }
                         }
                     }
                     .padding(.vertical, 10)
