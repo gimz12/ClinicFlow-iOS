@@ -110,8 +110,11 @@ struct PaymentView: View {
         .navigationBarHidden(true)
         .onChange(of: shouldDismissToDashboard) { _, newValue in
             if newValue {
-                onDismissToDashboard?()
-                dismiss()
+                if let callback = onDismissToDashboard {
+                    callback()
+                } else {
+                    dismiss()
+                }
             }
         }
     }
@@ -553,10 +556,7 @@ struct PaymentSuccessView: View {
                     
                     // Back to Home
                     Button(action: {
-                        dismiss()
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            onDismissToDashboard()
-                        }
+                        shouldDismissToDashboard = true
                     }) {
                         Text("Back to Home")
                             .font(.system(size: 16, weight: .semibold))
@@ -573,10 +573,7 @@ struct PaymentSuccessView: View {
         .navigationBarHidden(true)
         .onChange(of: shouldDismissToDashboard) { _, newValue in
             if newValue {
-                dismiss()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    onDismissToDashboard()
-                }
+                onDismissToDashboard()
             }
         }
     }

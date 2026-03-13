@@ -350,8 +350,9 @@ struct RescheduleAppointmentView: View {
             Button(action: {
                 if let callback = onDismissToDashboard {
                     callback()
+                } else {
+                    dismiss()
                 }
-                dismiss()
             }) {
                 Text("Confirm Reschedule")
                     .font(.system(size: 16, weight: .semibold))
@@ -368,8 +369,9 @@ struct RescheduleAppointmentView: View {
             Button(action: {
                 if let callback = onDismissToDashboard {
                     callback()
+                } else {
+                    dismiss()
                 }
-                dismiss()
             }) {
                 Text("Cancel")
                     .font(.system(size: 16, weight: .medium))

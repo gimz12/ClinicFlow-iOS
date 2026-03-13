@@ -91,8 +91,11 @@ struct AppointmentDetailsView: View {
         .navigationBarHidden(true)
         .onChange(of: shouldDismissToDashboard) { _, newValue in
             if newValue {
-                onDismissToDashboard?()
-                dismiss()
+                if let callback = onDismissToDashboard {
+                    callback()
+                } else {
+                    dismiss()
+                }
             }
         }
     }
