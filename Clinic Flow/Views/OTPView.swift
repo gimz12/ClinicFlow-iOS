@@ -2,14 +2,13 @@ import SwiftUI
 
 struct OTPView: View {
     let phoneNumber: String
+    var onSignUp: (() -> Void)? = nil
 
     @State private var otpCode: String = ""
     @State private var secondsRemaining: Int = 165
     @State private var timer: Timer? = nil
     @State private var navigateToDashboard: Bool = false
     @Environment(\.dismiss) private var dismiss
-
-    private let navyColor = Color(red: 0.13, green: 0.27, blue: 0.40)
 
     var formattedTime: String {
         let minutes = secondsRemaining / 60
@@ -41,7 +40,7 @@ struct OTPView: View {
                             .frame(width: 52, height: 52)
                         Image(systemName: "iphone")
                             .font(.system(size: 22))
-                            .foregroundColor(navyColor)
+                            .foregroundColor(authNavy)
                     }
 
                     VStack(alignment: .leading, spacing: 2) {
@@ -88,7 +87,7 @@ struct OTPView: View {
                             startTimer()
                         }
                         .font(.system(size: 14, weight: .semibold))
-                        .foregroundColor(navyColor)
+                        .foregroundColor(authNavy)
                     }
                     .padding(.top, 4)
                 }
@@ -98,57 +97,26 @@ struct OTPView: View {
                 Button {
                     navigateToDashboard = true
                 } label: {
-                    Text("Verify & Continue")
-                        .font(.system(size: 17, weight: .semibold))
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 18)
-                        .background(navyColor)
-                        .cornerRadius(14)
+                        Text("Verify & Continue")
+                            .font(.system(size: 17, weight: .semibold))
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 18)
+                            .background(authNavy)
+                            .cornerRadius(14)
                 }
                 .padding(.bottom, 24)
-
-                // OR Divider
-                HStack {
-                    Rectangle()
-                        .frame(height: 1)
-                        .foregroundColor(Color(.systemGray4))
-                    Text("OR")
-                        .font(.system(size: 14))
-                        .foregroundColor(.secondary)
-                        .padding(.horizontal, 12)
-                    Rectangle()
-                        .frame(height: 1)
-                        .foregroundColor(Color(.systemGray4))
-                }
-                .padding(.bottom, 24)
-
-                // Sign in Using Patient ID Button
-                Button {
-                    // Handle Patient ID sign in
-                } label: {
-                    Text("Sign in Using Patient ID")
-                        .font(.system(size: 17, weight: .semibold))
-                        .foregroundColor(.primary)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 18)
-                        .background(Color.white)
-                        .cornerRadius(14)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 14)
-                                .stroke(Color(.systemGray4), lineWidth: 1)
-                        )
-                }
-                .padding(.bottom, 32)
 
                 // Footer Links
                 VStack(spacing: 16) {
                     HStack(spacing: 4) {
                         Text("Don't have an account?")
                             .foregroundColor(.secondary)
-                        Button("Sign Up") {}
+                        Button("Sign Up") {
+                            onSignUp?()
+                        }
                             .fontWeight(.semibold)
-                            .foregroundColor(navyColor)
+                            .foregroundColor(authNavy)
                     }
                     .font(.system(size: 15))
 
@@ -157,11 +125,12 @@ struct OTPView: View {
                             .foregroundColor(.secondary)
                         Button("Contact reception") {}
                             .fontWeight(.semibold)
-                            .foregroundColor(navyColor)
+                            .foregroundColor(authNavy)
                     }
                     .font(.system(size: 15))
                 }
                 .frame(maxWidth: .infinity)
+                .padding(.top, 8)
             }
             .padding(.horizontal, 24)
         }
@@ -175,12 +144,12 @@ struct OTPView: View {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button {
                     dismiss()
-                } label: {
-                    HStack(spacing: 4) {
-                        Image(systemName: "chevron.left")
-                        Text("Back")
-                    }
-                    .foregroundColor(navyColor)
+                    } label: {
+                        HStack(spacing: 4) {
+                            Image(systemName: "chevron.left")
+                            Text("Back")
+                        }
+                    .foregroundColor(authNavy)
                 }
             }
         }

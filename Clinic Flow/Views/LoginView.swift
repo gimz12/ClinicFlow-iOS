@@ -1,15 +1,83 @@
 import SwiftUI
 
+let authNavy = Color(red: 0.13, green: 0.27, blue: 0.40)
+
+enum RecoveryMethod: String, CaseIterable, Hashable {
+    case email
+    case sms
+
+    var title: String {
+        switch self {
+        case .email:
+            return "Email"
+        case .sms:
+            return "SMS"
+        }
+    }
+
+    var subtitle: String {
+        switch self {
+        case .email:
+            return "Send code to your email"
+        case .sms:
+            return "Send code to your phone"
+        }
+    }
+
+    var fieldTitle: String {
+        switch self {
+        case .email:
+            return "EMAIL ADDRESS"
+        case .sms:
+            return "PHONE NUMBER"
+        }
+    }
+
+    var placeholder: String {
+        switch self {
+        case .email:
+            return "your.email@example.com"
+        case .sms:
+            return "+1 (555) 000-0000"
+        }
+    }
+
+    var deliveryText: String {
+        switch self {
+        case .email:
+            return "email"
+        case .sms:
+            return "phone"
+        }
+    }
+
+    var iconName: String {
+        switch self {
+        case .email:
+            return "envelope"
+        case .sms:
+            return "message"
+        }
+    }
+}
+
+enum AuthRoute: Hashable {
+    case otp(phoneNumber: String)
+    case signUp
+    case forgotPassword
+    case verifyRecoveryCode(method: RecoveryMethod, destination: String)
+    case newPassword
+}
+
 struct LoginView: View {
     @State private var phoneNumber: String = ""
-    @State private var navigateToOTP: Bool = false
+    @State private var path = NavigationPath()
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
-                    // Header
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Welcome Back")
                             .font(.system(size: 32, weight: .bold))
@@ -22,18 +90,17 @@ struct LoginView: View {
                     .padding(.top, 32)
                     .padding(.bottom, 32)
 
-                    // Phone Number Field
                     VStack(alignment: .leading, spacing: 8) {
                         Text("PHONE NUMBER")
                             .font(.system(size: 13, weight: .semibold))
                             .foregroundColor(.primary)
                             .tracking(0.5)
 
-                        TextField("Enter your Phone number", text: $phoneNumber)
+                        TextField("Enter your phone number", text: $phoneNumber)
                             .padding()
                             .background(Color(.systemGray6))
                             .cornerRadius(12)
-                            .keyboardType(.numberPad)
+                            .keyboardType(.phonePad)
 
                         Text("We'll send a verification code to your phone number")
                             .font(.system(size: 14))
@@ -42,65 +109,36 @@ struct LoginView: View {
                     }
                     .padding(.bottom, 28)
 
-                    // Continue Button
                     Button {
-                        if !phoneNumber.isEmpty {
-                            navigateToOTP = true
+                        guard !phoneNumber.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+                            return
                         }
+                        path.append(AuthRoute.otp(phoneNumber: phoneNumber))
                     } label: {
                         Text("Continue")
-                            .font(.system(size: 17, weight: .semibold))
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 18)
-                            .background(Color(red: 0.13, green: 0.27, blue: 0.40))
-                            .cornerRadius(14)
                     }
-                    .padding(.bottom, 24)
+                    .authPrimaryButton()
+                    .padding(.bottom, 16)
 
-                    // OR Divider
                     HStack {
-                        Rectangle()
-                            .frame(height: 1)
-                            .foregroundColor(Color(.systemGray4))
-                        Text("OR")
-                            .font(.system(size: 14))
-                            .foregroundColor(.secondary)
-                            .padding(.horizontal, 12)
-                        Rectangle()
-                            .frame(height: 1)
-                            .foregroundColor(Color(.systemGray4))
-                    }
-                    .padding(.bottom, 24)
-
-                    // Sign in Using Patient ID Button
-                    Button {
-                        // Handle Patient ID sign in
-                    } label: {
-                        Text("Sign in Using Patient ID")
-                            .font(.system(size: 17, weight: .semibold))
-                            .foregroundColor(.primary)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 18)
-                            .background(Color.white)
-                            .cornerRadius(14)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 14)
-                                    .stroke(Color(.systemGray4), lineWidth: 1)
-                            )
+                        Spacer()
+                        Button("Forgot Password?") {
+                            showForgotPassword()
+                        }
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundColor(authNavy)
                     }
                     .padding(.bottom, 32)
 
-                    // Footer Links
                     VStack(spacing: 16) {
                         HStack(spacing: 4) {
                             Text("Don't have an account?")
                                 .foregroundColor(.secondary)
                             Button("Sign Up") {
-                                // Handle sign up
+                                showSignUp()
                             }
                             .fontWeight(.semibold)
-                            .foregroundColor(Color(red: 0.13, green: 0.27, blue: 0.40))
+                            .foregroundColor(authNavy)
                         }
                         .font(.system(size: 15))
 
@@ -108,10 +146,9 @@ struct LoginView: View {
                             Text("Need assistance?")
                                 .foregroundColor(.secondary)
                             Button("Contact reception") {
-                                // Handle contact
                             }
                             .fontWeight(.semibold)
-                            .foregroundColor(Color(red: 0.13, green: 0.27, blue: 0.40))
+                            .foregroundColor(authNavy)
                         }
                         .font(.system(size: 15))
                     }
@@ -122,8 +159,48 @@ struct LoginView: View {
             .navigationTitle("Sign In")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
-            .navigationDestination(isPresented: $navigateToOTP) {
-                OTPView(phoneNumber: phoneNumber)
+            .navigationDestination(for: AuthRoute.self) { route in
+                switch route {
+                case .otp(let phoneNumber):
+                    OTPView(phoneNumber: phoneNumber) {
+                        showSignUp()
+                    }
+                case .signUp:
+                    SignUpView(
+                        onCreateAccount: { registeredPhoneNumber in
+                            path.append(AuthRoute.otp(phoneNumber: registeredPhoneNumber))
+                        },
+                        onSignIn: {
+                            path = NavigationPath()
+                        }
+                    )
+                case .forgotPassword:
+                    ForgotPasswordView(
+                        onSendCode: { method, destination in
+                            path.append(
+                                AuthRoute.verifyRecoveryCode(
+                                    method: method,
+                                    destination: destination
+                                )
+                            )
+                        },
+                        onBackToSignIn: {
+                            path = NavigationPath()
+                        }
+                    )
+                case .verifyRecoveryCode(let method, let destination):
+                    VerifyRecoveryCodeView(
+                        method: method,
+                        destination: destination,
+                        onVerify: {
+                            path.append(AuthRoute.newPassword)
+                        }
+                    )
+                case .newPassword:
+                    NewPasswordView {
+                        path = NavigationPath()
+                    }
+                }
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -134,11 +211,39 @@ struct LoginView: View {
                             Image(systemName: "chevron.left")
                             Text("Back")
                         }
-                        .foregroundColor(Color(red: 0.13, green: 0.27, blue: 0.40))
+                        .foregroundColor(authNavy)
                     }
                 }
             }
         }
+    }
+
+    private func showSignUp() {
+        path = NavigationPath()
+        path.append(AuthRoute.signUp)
+    }
+
+    private func showForgotPassword() {
+        path = NavigationPath()
+        path.append(AuthRoute.forgotPassword)
+    }
+}
+
+private struct AuthPrimaryButtonModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.system(size: 17, weight: .semibold))
+            .foregroundColor(.white)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 18)
+            .background(authNavy)
+            .cornerRadius(14)
+    }
+}
+
+extension View {
+    func authPrimaryButton() -> some View {
+        modifier(AuthPrimaryButtonModifier())
     }
 }
 
