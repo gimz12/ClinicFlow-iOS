@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 // MARK: - Models
 
@@ -222,17 +223,11 @@ struct DashboardView: View {
     // MARK: - Header
     var headerSection: some View {
         ZStack(alignment: .bottomLeading) {
-            // Background gradient simulating the image
-            LinearGradient(
-                colors: [Color(red: 0.25, green: 0.45, blue: 0.55), Color(red: 0.10, green: 0.20, blue: 0.32)],
-                startPoint: .topTrailing,
-                endPoint: .bottomLeading
-            )
-            .frame(height: 220)
-            .overlay(
-                // silhouette overlay
-                Color.black.opacity(0.25)
-            )
+            heroBackground
+                .frame(height: 220)
+                .overlay(
+                    Color.black.opacity(0.25)
+                )
 
             VStack(alignment: .leading, spacing: 4) {
                 Text("Good Morning")
@@ -283,6 +278,22 @@ struct DashboardView: View {
             }
         }
         .frame(height: 220)
+    }
+
+    @ViewBuilder
+    private var heroBackground: some View {
+        if let heroImage = UIImage(named: "DashboardHero") {
+            Image(uiImage: heroImage)
+                .resizable()
+                .scaledToFill()
+                .clipped()
+        } else {
+            LinearGradient(
+                colors: [Color(red: 0.25, green: 0.45, blue: 0.55), Color(red: 0.10, green: 0.20, blue: 0.32)],
+                startPoint: .topTrailing,
+                endPoint: .bottomLeading
+            )
+        }
     }
 
     // MARK: - Main Content

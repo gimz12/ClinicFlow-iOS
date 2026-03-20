@@ -281,12 +281,10 @@ struct RoomNavigationView: View {
                 
                 // Map placeholder
                 ZStack {
-                    // Background gradient for 3D floor effect
-                    LinearGradient(
-                        colors: [navy.opacity(0.6), navy.opacity(0.85)],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
+                    Image("FloorPlan")
+                        .resizable()
+                        .scaledToFill()
+                        .overlay(navy.opacity(0.15))
                     
                     // Floor grid pattern
                     GeometryReader { geometry in
@@ -426,7 +424,7 @@ struct RoomNavigationView: View {
                     }
                 }
                 .frame(height: 200)
-                .cornerRadius(12)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
                 .padding(.horizontal, 12)
                 .padding(.bottom, 12)
             }

@@ -256,9 +256,7 @@ struct IndoorNavigationView: View {
             
             // Map View
             ZStack {
-                // Map background
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(navy.opacity(0.9))
+                floorPlanBackground
                 
                 // Grid lines
                 GeometryReader { geometry in
@@ -414,8 +412,15 @@ struct IndoorNavigationView: View {
                 }
             }
             .frame(height: 200)
-            .cornerRadius(12)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
         }
+    }
+
+    private var floorPlanBackground: some View {
+        Image("FloorPlan")
+            .resizable()
+            .scaledToFill()
+            .overlay(navy.opacity(0.15))
     }
     
     // MARK: - Directions Section
