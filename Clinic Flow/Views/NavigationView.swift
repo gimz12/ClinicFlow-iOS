@@ -1,7 +1,7 @@
 import SwiftUI
 
 // MARK: - Models
-struct DirectionStep: Identifiable {
+struct RoomDirectionStep: Identifiable {
     let id = UUID()
     let stepNumber: Int
     let title: String
@@ -18,11 +18,11 @@ struct RoomNavigationView: View {
     private let navy = Color(red: 0.13, green: 0.27, blue: 0.40)
     private let lightBlue = Color(red: 0.88, green: 0.93, blue: 0.97)
     
-    let directionSteps: [DirectionStep] = [
-        DirectionStep(stepNumber: 1, title: "Take the elevator to 2nd floor", subtitle: "From your current position", distance: "30m", isArrival: false),
-        DirectionStep(stepNumber: 2, title: "Turn right from elevator", subtitle: "Head towards East Wing", distance: "50m", isArrival: false),
-        DirectionStep(stepNumber: 3, title: "Continue along main corridor", subtitle: "Pass rooms A-205, A-203", distance: "60m", isArrival: false),
-        DirectionStep(stepNumber: 4, title: "Arrive at Room A-201", subtitle: "On your right side", distance: "10m", isArrival: true)
+    let directionSteps: [RoomDirectionStep] = [
+        RoomDirectionStep(stepNumber: 1, title: "Take the elevator to 2nd floor", subtitle: "From your current position", distance: "30m", isArrival: false),
+        RoomDirectionStep(stepNumber: 2, title: "Turn right from elevator", subtitle: "Head towards East Wing", distance: "50m", isArrival: false),
+        RoomDirectionStep(stepNumber: 3, title: "Continue along main corridor", subtitle: "Pass rooms A-205, A-203", distance: "60m", isArrival: false),
+        RoomDirectionStep(stepNumber: 4, title: "Arrive at Room A-201", subtitle: "On your right side", distance: "10m", isArrival: true)
     ]
     
     var body: some View {
