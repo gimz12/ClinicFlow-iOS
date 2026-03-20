@@ -12,6 +12,7 @@ struct ProfileView: View {
     @State private var showNotifications: Bool = false
     @State private var showLanguageRegion: Bool = false
     @State private var showPrivacySecurity: Bool = false
+    @State private var showEndVisit: Bool = false
 
     private let navy = Color(red: 0.10, green: 0.30, blue: 0.42)
     private let lightCard = Color(.systemBackground)
@@ -51,7 +52,7 @@ struct ProfileView: View {
             }
         }
         .navigationDestination(isPresented: $showEditProfile) {
-            PlaceholderView(title: "Edit Profile")
+            PlaceholderScreen(title: "Edit Profile")
         }
         .navigationDestination(isPresented: $showPaymentMethods) {
             PaymentMethodsView()
@@ -66,13 +67,16 @@ struct ProfileView: View {
             AccessibilitySettingsView()
         }
         .navigationDestination(isPresented: $showNotifications) {
-            PlaceholderView(title: "Notifications")
+            PlaceholderScreen(title: "Notifications")
         }
         .navigationDestination(isPresented: $showLanguageRegion) {
             LanguageRegionView()
         }
         .navigationDestination(isPresented: $showPrivacySecurity) {
             PrivacySecurityView()
+        }
+        .navigationDestination(isPresented: $showEndVisit) {
+            PlaceholderScreen(title: "End Visit & Logout", message: "Sign out flow will be implemented here.")
         }
     }
 
@@ -227,7 +231,7 @@ struct ProfileView: View {
 
     private var logoutButton: some View {
         Button(action: {
-            // End visit action
+            showEndVisit = true
         }) {
             Text("End Visit & Logout")
                 .font(.system(size: 16, weight: .semibold))
@@ -300,34 +304,6 @@ struct ProfileView: View {
             .padding(.vertical, 14)
         }
         .buttonStyle(.plain)
-    }
-}
-
-private struct PlaceholderView: View {
-    @Environment(\.dismiss) private var dismiss
-    let title: String
-
-    var body: some View {
-        ZStack {
-            Color(.systemGroupedBackground).ignoresSafeArea()
-            VStack(spacing: 16) {
-                Text(title)
-                    .font(.system(size: 24, weight: .bold))
-                Text("This screen is coming soon.")
-                    .font(.system(size: 15))
-                    .foregroundColor(.secondary)
-                Button("Back") {
-                    dismiss()
-                }
-                .font(.system(size: 16, weight: .semibold))
-                .foregroundColor(.white)
-                .padding(.horizontal, 24)
-                .padding(.vertical, 12)
-                .background(Color(red: 0.10, green: 0.30, blue: 0.42))
-                .cornerRadius(12)
-            }
-            .padding(24)
-        }
     }
 }
 
