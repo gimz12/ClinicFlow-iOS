@@ -11,13 +11,19 @@ struct ProfileView: View {
     @State private var showAccessibility: Bool = false
     @State private var showNotifications: Bool = false
     @State private var hasUnreadNotifications: Bool = true
+    @State private var showNotificationSettings: Bool = false
     @State private var showLanguageRegion: Bool = false
     @State private var showPrivacySecurity: Bool = false
     @State private var showEndVisit: Bool = false
+    @State private var showLogin: Bool = false
 
     private let navy = Color(red: 0.10, green: 0.30, blue: 0.42)
     private let lightCard = Color(.systemBackground)
     private let dividerColor = Color(.systemGray5)
+
+    init(onNavigateToDashboard: (() -> Void)? = nil) {
+        self.onNavigateToDashboard = onNavigateToDashboard
+    }
 
     var body: some View {
         ZStack {
@@ -53,7 +59,7 @@ struct ProfileView: View {
             }
         }
         .navigationDestination(isPresented: $showEditProfile) {
-            PlaceholderScreen(title: "Edit Profile")
+            EditProfileView()
         }
         .navigationDestination(isPresented: $showPaymentMethods) {
             PaymentMethodsView()
@@ -70,6 +76,9 @@ struct ProfileView: View {
         .navigationDestination(isPresented: $showNotifications) {
             NotificationsView(hasUnreadNotifications: $hasUnreadNotifications)
         }
+        .navigationDestination(isPresented: $showNotificationSettings) {
+            NotificationSettingsView()
+        }
         .navigationDestination(isPresented: $showLanguageRegion) {
             LanguageRegionView()
         }
@@ -77,7 +86,13 @@ struct ProfileView: View {
             PrivacySecurityView()
         }
         .navigationDestination(isPresented: $showEndVisit) {
-            PlaceholderScreen(title: "End Visit & Logout", message: "Sign out flow will be implemented here.")
+            EndVisitConfirmationView(onConfirmSignOut: {
+                showEndVisit = false
+                showLogin = true
+            })
+        }
+        .fullScreenCover(isPresented: $showLogin) {
+            LoginView()
         }
     }
 
@@ -216,6 +231,8 @@ struct ProfileView: View {
     private var settingsSection: some View {
         VStack(spacing: 0) {
             settingsRow(title: "Notifications", action: { showNotifications = true })
+            Divider().padding(.leading, 16)
+            settingsRow(title: "Notification Settings", action: { showNotificationSettings = true })
             Divider().padding(.leading, 16)
             settingsRow(title: "Language & Region", action: { showLanguageRegion = true })
             Divider().padding(.leading, 16)
