@@ -72,7 +72,7 @@ struct ProfileView: View {
             LanguageRegionView()
         }
         .navigationDestination(isPresented: $showPrivacySecurity) {
-            PlaceholderView(title: "Privacy & Security")
+            PrivacySecurityView()
         }
     }
 
