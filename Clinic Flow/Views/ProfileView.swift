@@ -10,6 +10,7 @@ struct ProfileView: View {
     @State private var showHelpSupport: Bool = false
     @State private var showAccessibility: Bool = false
     @State private var showNotifications: Bool = false
+    @State private var hasUnreadNotifications: Bool = true
     @State private var showLanguageRegion: Bool = false
     @State private var showPrivacySecurity: Bool = false
     @State private var showEndVisit: Bool = false
@@ -67,7 +68,7 @@ struct ProfileView: View {
             AccessibilitySettingsView()
         }
         .navigationDestination(isPresented: $showNotifications) {
-            PlaceholderScreen(title: "Notifications")
+            NotificationsView(hasUnreadNotifications: $hasUnreadNotifications)
         }
         .navigationDestination(isPresented: $showLanguageRegion) {
             LanguageRegionView()
