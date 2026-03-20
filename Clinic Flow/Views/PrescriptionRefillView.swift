@@ -41,6 +41,8 @@ struct PrescriptionRefillView: View {
                 .padding(.bottom, 18)
             }
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
     }
 
     private var header: some View {
