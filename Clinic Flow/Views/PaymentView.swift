@@ -114,7 +114,7 @@ struct PaymentView: View {
             PaymentMethodsView()
         }
         .navigationDestination(isPresented: $showTerms) {
-            PlaceholderScreen(title: "Terms of Service")
+            TermsOfServiceView()
         }
         .onChange(of: shouldDismissToDashboard) { _, newValue in
             if newValue {
