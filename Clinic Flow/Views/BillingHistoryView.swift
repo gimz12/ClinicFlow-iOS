@@ -50,6 +50,8 @@ enum TransactionFilter: String, CaseIterable {
 struct BillingHistoryView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var selectedFilter: TransactionFilter = .all
+    @State private var showDownload: Bool = false
+    @State private var showLoadMore: Bool = false
     
     private let navy = Color(red: 0.13, green: 0.27, blue: 0.40)
     private let lightBlue = Color(red: 0.88, green: 0.93, blue: 0.97)
@@ -126,6 +128,12 @@ struct BillingHistoryView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
+        .navigationDestination(isPresented: $showDownload) {
+            PlaceholderScreen(title: "Download Statement")
+        }
+        .navigationDestination(isPresented: $showLoadMore) {
+            PlaceholderScreen(title: "Load More Transactions")
+        }
     }
     
     // MARK: - Header
@@ -152,7 +160,7 @@ struct BillingHistoryView: View {
             
             // Download button
             Button(action: {
-                // Download action
+                showDownload = true
             }) {
                 Image(systemName: "arrow.down.circle")
                     .font(.system(size: 20))
@@ -329,7 +337,7 @@ struct BillingHistoryView: View {
     // MARK: - Load More
     var loadMoreButton: some View {
         Button(action: {
-            // Load more transactions
+            showLoadMore = true
         }) {
             HStack {
                 Spacer()
