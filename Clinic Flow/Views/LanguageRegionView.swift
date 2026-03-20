@@ -42,6 +42,8 @@ struct LanguageRegionView: View {
                 }
             }
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
     }
 
     private var header: some View {
