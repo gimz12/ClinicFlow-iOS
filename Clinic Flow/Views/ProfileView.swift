@@ -18,63 +18,61 @@ struct ProfileView: View {
     private let dividerColor = Color(.systemGray5)
 
     var body: some View {
-        NavigationStack {
-            ZStack {
-                Color(.systemGroupedBackground)
-                    .ignoresSafeArea()
+        ZStack {
+            Color(.systemGroupedBackground)
+                .ignoresSafeArea()
 
-                VStack(spacing: 0) {
-                    header
+            VStack(spacing: 0) {
+                header
 
-                    ScrollView(showsIndicators: false) {
-                        VStack(alignment: .leading, spacing: 20) {
-                            profileCard
+                ScrollView(showsIndicators: false) {
+                    VStack(alignment: .leading, spacing: 20) {
+                        profileCard
 
-                            sectionTitle("Quick Actions")
-                            quickActionsSection
+                        sectionTitle("Quick Actions")
+                        quickActionsSection
 
-                            sectionTitle("Settings")
-                            settingsSection
+                        sectionTitle("Settings")
+                        settingsSection
 
-                            Text("Version 1.0.0")
-                                .font(.system(size: 13, weight: .medium))
-                                .foregroundColor(.secondary)
-                                .frame(maxWidth: .infinity)
-                                .padding(.top, 6)
+                        Text("Version 1.0.0")
+                            .font(.system(size: 13, weight: .medium))
+                            .foregroundColor(.secondary)
+                            .frame(maxWidth: .infinity)
+                            .padding(.top, 6)
 
-                            logoutButton
-                                .padding(.top, 8)
-                        }
-                        .padding(.horizontal, 16)
-                        .padding(.top, 16)
-                        .padding(.bottom, 28)
+                        logoutButton
+                            .padding(.top, 8)
                     }
+                    .padding(.horizontal, 16)
+                    .padding(.top, 16)
+                    .padding(.bottom, 28)
                 }
             }
-            .navigationDestination(isPresented: $showEditProfile) {
-                PlaceholderView(title: "Edit Profile")
-            }
-            .navigationDestination(isPresented: $showPaymentMethods) {
-                PaymentMethodsView()
-            }
-            .navigationDestination(isPresented: $showBillingHistory) {
-                BillingHistoryView()
-            }
-            .navigationDestination(isPresented: $showHelpSupport) {
-                PlaceholderView(title: "Help & Support")
-            }
-            .navigationDestination(isPresented: $showAccessibility) {
-                PlaceholderView(title: "Accessibility Settings")
-            }
-            .navigationDestination(isPresented: $showNotifications) {
-                PlaceholderView(title: "Notifications")
-            }
-            .navigationDestination(isPresented: $showLanguageRegion) {
-                PlaceholderView(title: "Language & Region")
-            }
-            .navigationDestination(isPresented: $showPrivacySecurity) {
-                PlaceholderView(title: "Privacy & Security")
-            }
+        }
+        .navigationDestination(isPresented: $showEditProfile) {
+            PlaceholderView(title: "Edit Profile")
+        }
+        .navigationDestination(isPresented: $showPaymentMethods) {
+            PaymentMethodsView()
+        }
+        .navigationDestination(isPresented: $showBillingHistory) {
+            BillingHistoryView()
+        }
+        .navigationDestination(isPresented: $showHelpSupport) {
+            PlaceholderView(title: "Help & Support")
+        }
+        .navigationDestination(isPresented: $showAccessibility) {
+            PlaceholderView(title: "Accessibility Settings")
+        }
+        .navigationDestination(isPresented: $showNotifications) {
+            PlaceholderView(title: "Notifications")
+        }
+        .navigationDestination(isPresented: $showLanguageRegion) {
+            PlaceholderView(title: "Language & Region")
+        }
+        .navigationDestination(isPresented: $showPrivacySecurity) {
+            PlaceholderView(title: "Privacy & Security")
         }
     }
 
