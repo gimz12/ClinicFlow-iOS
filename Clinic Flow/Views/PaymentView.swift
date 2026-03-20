@@ -17,6 +17,7 @@ struct PaymentView: View {
     @State private var showSuccess: Bool = false
     @State private var shouldDismissToDashboard: Bool = false
     @State private var showAddCard: Bool = false
+    @State private var showPaymentMethods: Bool = false
     
     private let navy = Color(red: 0.13, green: 0.27, blue: 0.40)
     private let lightBlue = Color(red: 0.88, green: 0.93, blue: 0.97)
@@ -108,6 +109,9 @@ struct PaymentView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
+        .navigationDestination(isPresented: $showPaymentMethods) {
+            PaymentMethodsView()
+        }
         .onChange(of: shouldDismissToDashboard) { _, newValue in
             if newValue {
                 if let callback = onDismissToDashboard {
@@ -246,7 +250,7 @@ struct PaymentView: View {
                     .tracking(0.5)
                 Spacer()
                 Button("Manage") {
-                    // Manage cards action
+                    showPaymentMethods = true
                 }
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundColor(navy)
