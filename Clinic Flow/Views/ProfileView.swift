@@ -19,6 +19,10 @@ struct ProfileView: View {
     private let lightCard = Color(.systemBackground)
     private let dividerColor = Color(.systemGray5)
 
+    init(onNavigateToDashboard: (() -> Void)? = nil) {
+        self.onNavigateToDashboard = onNavigateToDashboard
+    }
+
     var body: some View {
         ZStack {
             Color(.systemGroupedBackground)
