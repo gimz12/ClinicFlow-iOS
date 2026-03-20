@@ -39,7 +39,7 @@ enum ScheduleStatus {
     }
 }
 
-struct Prescription: Identifiable {
+struct Prescription: Identifiable, Hashable {
     let id = UUID()
     let name: String
     let dosage: String
@@ -49,9 +49,17 @@ struct Prescription: Identifiable {
     let instructions: String
     let color: Color
     let icon: String
+
+    static func == (lhs: Prescription, rhs: Prescription) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }
 
-struct LabResult: Identifiable {
+struct LabResult: Identifiable, Hashable {
     let id = UUID()
     let name: String
     let date: String
@@ -61,6 +69,14 @@ struct LabResult: Identifiable {
     let hasDownload: Bool
     let icon: String
     let iconColor: Color
+
+    static func == (lhs: LabResult, rhs: LabResult) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }
 
 private let navy = Color(red: 0.13, green: 0.27, blue: 0.40)
