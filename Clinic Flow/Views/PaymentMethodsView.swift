@@ -16,6 +16,7 @@ struct PaymentMethodsView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showAddCard: Bool = false
     @State private var showBillingHistory: Bool = false
+    @State private var showEditCard: Bool = false
     
     private let navy = Color(red: 0.13, green: 0.27, blue: 0.40)
     private let lightBlue = Color(red: 0.88, green: 0.93, blue: 0.97)
@@ -73,6 +74,9 @@ struct PaymentMethodsView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
+        .navigationDestination(isPresented: $showEditCard) {
+            PlaceholderScreen(title: "Edit Card")
+        }
     }
     
     // MARK: - Header
@@ -184,7 +188,7 @@ struct PaymentMethodsView: View {
                 }
                 
                 Button(action: {
-                    // Edit card action
+                    showEditCard = true
                 }) {
                     Text("Edit")
                         .font(.system(size: 13, weight: .semibold))
