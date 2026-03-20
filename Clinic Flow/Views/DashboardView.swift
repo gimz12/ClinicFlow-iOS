@@ -85,6 +85,7 @@ private let navy = Color(red: 0.13, green: 0.27, blue: 0.40)
 struct DashboardView: View {
     @State private var selectedTab: Int = 0
     @State private var showBookAppointment: Bool = false
+    @State private var showCheckIn: Bool = false
     @State private var showAppointmentDetails: Bool = false
     @State private var showRescheduleAppointment: Bool = false
     @State private var showNotifications: Bool = false
@@ -191,6 +192,9 @@ struct DashboardView: View {
         }
         .navigationDestination(isPresented: $showRoomNavigation) {
             RoomNavigationView()
+        }
+        .navigationDestination(isPresented: $showCheckIn) {
+            CheckInView()
         }
         .overlay(alignment: .bottom) {
             // Bottom action bar (above tab bar)
@@ -840,7 +844,7 @@ struct DashboardView: View {
                 .font(.system(size: 17, weight: .bold))
 
             Button {
-                showStartVisit = true
+                showCheckIn = true
             } label: {
                 HStack(spacing: 12) {
                     ZStack {
