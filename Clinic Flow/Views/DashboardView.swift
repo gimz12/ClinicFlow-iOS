@@ -79,8 +79,9 @@ struct DashboardView: View {
     @State private var showAllSchedule: Bool = false
     @State private var showAllPrescriptions: Bool = false
     @State private var showAllLabResults: Bool = false
-    @State private var showRequestRefill: Bool = false
-    @State private var showLabDownload: Bool = false
+    @State private var showStartVisit: Bool = false
+    @State private var selectedPrescription: Prescription? = nil
+    @State private var selectedLabResult: LabResult? = nil
 
     let appointments: [Appointment] = [
         Appointment(month: "FEB", day: 28, dayName: "Thu",
@@ -209,11 +210,14 @@ struct DashboardView: View {
         .navigationDestination(isPresented: $showAllLabResults) {
             LabResultsListView()
         }
-        .navigationDestination(isPresented: $showRequestRefill) {
-            PlaceholderScreen(title: "Request Refill")
+        .navigationDestination(isPresented: $showStartVisit) {
+            StartNewVisitView()
         }
-        .navigationDestination(isPresented: $showLabDownload) {
-            PlaceholderScreen(title: "Lab Result Download")
+        .navigationDestination(item: $selectedPrescription) { rx in
+            PrescriptionRefillView(prescription: rx)
+        }
+        .navigationDestination(item: $selectedLabResult) { result in
+            LabResultDetailView(result: result)
         }
         .navigationDestination(isPresented: $showNotifications) {
             NotificationsView(hasUnreadNotifications: $hasUnreadNotifications)
@@ -720,7 +724,7 @@ struct DashboardView: View {
                 .foregroundColor(.secondary)
 
             Button("Request Refill") {
-                showRequestRefill = true
+                selectedPrescription = rx
             }
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundColor(navy)
@@ -785,7 +789,7 @@ struct DashboardView: View {
 
                         if result.hasDownload {
                             Button("Download") {
-                                showLabDownload = true
+                                selectedLabResult = result
                             }
                                 .font(.system(size: 12, weight: .semibold))
                                 .foregroundColor(navy)
@@ -796,6 +800,10 @@ struct DashboardView: View {
                             .foregroundColor(.secondary)
                     }
                     .padding(.vertical, 12)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        selectedLabResult = result
+                    }
 
                     if index < labResults.count - 1 {
                         Divider()
