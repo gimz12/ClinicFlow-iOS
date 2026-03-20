@@ -824,7 +824,7 @@ struct DashboardView: View {
                 .font(.system(size: 17, weight: .bold))
 
             Button {
-                showBookAppointment = true
+                showStartVisit = true
             } label: {
                 HStack(spacing: 12) {
                     ZStack {
