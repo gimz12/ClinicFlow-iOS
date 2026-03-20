@@ -5,17 +5,19 @@ struct LabResultsListView: View {
 
     private let navy = Color(red: 0.10, green: 0.30, blue: 0.42)
 
-    private let results: [LabResult] = [
-        LabResult(name: "Complete Blood Count", date: "Jan 20, 2026", doctor: "Dr. Smith",
-                  status: "Normal", statusColor: .green, hasDownload: false,
-                  icon: "checkmark.circle.fill", iconColor: .green),
-        LabResult(name: "Lipid Panel", date: "Jan 15, 2026", doctor: "Dr. Johnson",
-                  status: "Ready", statusColor: navy, hasDownload: true,
-                  icon: "arrow.down.circle.fill", iconColor: navy),
-        LabResult(name: "Metabolic Panel", date: "Dec 04, 2025", doctor: "Dr. Lee",
-                  status: "Normal", statusColor: .green, hasDownload: true,
-                  icon: "doc.text.fill", iconColor: .green)
-    ]
+    private var results: [LabResult] {
+        [
+            LabResult(name: "Complete Blood Count", date: "Jan 20, 2026", doctor: "Dr. Smith",
+                      status: "Normal", statusColor: .green, hasDownload: false,
+                      icon: "checkmark.circle.fill", iconColor: .green),
+            LabResult(name: "Lipid Panel", date: "Jan 15, 2026", doctor: "Dr. Johnson",
+                      status: "Ready", statusColor: navy, hasDownload: true,
+                      icon: "arrow.down.circle.fill", iconColor: navy),
+            LabResult(name: "Metabolic Panel", date: "Dec 04, 2025", doctor: "Dr. Lee",
+                      status: "Normal", statusColor: .green, hasDownload: true,
+                      icon: "doc.text.fill", iconColor: .green)
+        ]
+    }
 
     var body: some View {
         ZStack {
