@@ -118,13 +118,13 @@ struct DashboardView: View {
                 }
                 .tag(0)
 
-            Text("Navigate")
+            RoomNavigationView()
                 .tabItem {
                     Label("Navigate", systemImage: "location.fill")
                 }
                 .tag(1)
 
-            Text("Progress")
+            QueueStatusView()
                 .tabItem {
                     Label("Progress", systemImage: "chart.bar.fill")
                 }
@@ -151,6 +151,12 @@ struct DashboardView: View {
         }
         .ignoresSafeArea(edges: .top)
         .background(Color(.systemGroupedBackground))
+        .navigationDestination(isPresented: $showQueueStatus) {
+            QueueStatusView()
+        }
+        .navigationDestination(isPresented: $showRoomNavigation) {
+            RoomNavigationView()
+        }
         .overlay(alignment: .bottom) {
             // Bottom action bar (above tab bar)
             HStack(spacing: 32) {
@@ -348,19 +354,15 @@ struct DashboardView: View {
                     HStack(spacing: 4) {
                         Image(systemName: "clock").font(.system(size: 12)).foregroundColor(.secondary)
                         Text(appt.time).font(.system(size: 13)).foregroundColor(.secondary)
-                        if item.status == .inProgress && item.title == "Consultation" {
-                            NavigationLink {
-                                RoomNavigationView()
-                            } label: {
-                                Text("Navigate")
-                                    .font(.system(size: 12, weight: .semibold))
-                                    .foregroundColor(.white)
-                                    .padding(.horizontal, 12)
-                                    .padding(.vertical, 6)
-                                    .background(navy)
-                                    .cornerRadius(8)
-                            }
-                        }
+                    }
+                    HStack(spacing: 4) {
+                        Image(systemName: "person").font(.system(size: 12)).foregroundColor(.secondary)
+                        Text(appt.doctor).font(.system(size: 13)).foregroundColor(.secondary)
+                    }
+                    HStack(spacing: 4) {
+                        Image(systemName: "mappin").font(.system(size: 12)).foregroundColor(.secondary)
+                        Text(appt.location).font(.system(size: 13)).foregroundColor(.secondary)
+                    }
                 }
                 Spacer()
             }
@@ -437,9 +439,6 @@ struct DashboardView: View {
                     .background(Color.white)
                     .cornerRadius(10)
             }
-            .navigationDestination(isPresented: $showQueueStatus) {
-                QueueStatusView()
-            }
         }
         .padding(16)
         .background(navy)
@@ -505,9 +504,6 @@ struct DashboardView: View {
                                     .padding(.vertical, 6)
                                     .background(navy)
                                     .cornerRadius(8)
-                            }
-                            .navigationDestination(isPresented: $showRoomNavigation) {
-                                RoomNavigationView()
                             }
                         }
                     }
