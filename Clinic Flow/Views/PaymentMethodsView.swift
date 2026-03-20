@@ -75,7 +75,7 @@ struct PaymentMethodsView: View {
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
         .navigationDestination(isPresented: $showEditCard) {
-            PlaceholderScreen(title: "Edit Card")
+            EditCardView()
         }
     }
     
