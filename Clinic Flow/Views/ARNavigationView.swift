@@ -43,6 +43,8 @@ struct ARNavigationView: View {
                 .padding(16)
             }
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
     }
 
     private var header: some View {
