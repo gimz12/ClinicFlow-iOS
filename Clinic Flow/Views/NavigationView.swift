@@ -65,7 +65,7 @@ struct RoomNavigationView: View {
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
         .navigationDestination(isPresented: $showExternalNavigation) {
-            PlaceholderScreen(title: "External Navigation")
+            ExternalNavigationView()
         }
         .navigationDestination(isPresented: $showExpandFloorPlan) {
             ExpandedFloorPlanView()

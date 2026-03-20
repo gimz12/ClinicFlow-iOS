@@ -129,10 +129,10 @@ struct BillingHistoryView: View {
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
         .navigationDestination(isPresented: $showDownload) {
-            PlaceholderScreen(title: "Download Statement")
+            DownloadStatementView()
         }
         .navigationDestination(isPresented: $showLoadMore) {
-            PlaceholderScreen(title: "Load More Transactions")
+            LoadMoreTransactionsView()
         }
     }
     

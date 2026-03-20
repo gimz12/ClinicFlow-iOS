@@ -87,7 +87,7 @@ struct QueueStatusView: View {
             })
         }
         .navigationDestination(isPresented: $showSkipNext) {
-            PlaceholderScreen(title: "Skip to Next", message: "A staff member will confirm the next patient.")
+            SkipNextConfirmationView()
         }
         .onChange(of: shouldDismissToDashboard) { _, newValue in
             if newValue {
