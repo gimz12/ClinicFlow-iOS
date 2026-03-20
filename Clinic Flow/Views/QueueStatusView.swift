@@ -23,6 +23,8 @@ struct QueueStatusView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showNavigation: Bool = false
     @State private var shouldDismissToDashboard: Bool = false
+
+    var onNavigateToDashboard: (() -> Void)? = nil
     
     private let navy = Color(red: 0.13, green: 0.27, blue: 0.40)
     private let lightBlue = Color(red: 0.88, green: 0.93, blue: 0.97)
@@ -77,9 +79,19 @@ struct QueueStatusView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
+        .navigationDestination(isPresented: $showNavigation) {
+            RoomNavigationView(onNavigateToDashboard: {
+                showNavigation = false
+                shouldDismissToDashboard = true
+            })
+        }
         .onChange(of: shouldDismissToDashboard) { _, newValue in
             if newValue {
-                dismiss()
+                if let callback = onNavigateToDashboard {
+                    callback()
+                } else {
+                    dismiss()
+                }
             }
         }
     }
@@ -88,7 +100,11 @@ struct QueueStatusView: View {
     var headerView: some View {
         HStack {
             Button(action: {
-                dismiss()
+                if let callback = onNavigateToDashboard {
+                    callback()
+                } else {
+                    dismiss()
+                }
             }) {
                 HStack(spacing: 4) {
                     Image(systemName: "chevron.left")
@@ -174,12 +190,6 @@ struct QueueStatusView: View {
                     .cornerRadius(25)
             }
             .padding(.horizontal, 20)
-            .navigationDestination(isPresented: $showNavigation) {
-                RoomNavigationView(onNavigateToDashboard: {
-                    showNavigation = false
-                    shouldDismissToDashboard = true
-                })
-            }
         }
         .padding(20)
         .background(Color(.systemBackground))
@@ -425,7 +435,11 @@ var bottomButtons: some View {
 
             // Cancel Queue (Outlined Button)
             Button(action: {
-                dismiss()
+                if let callback = onNavigateToDashboard {
+                    callback()
+                } else {
+                    dismiss()
+                }
             }) {
                 Text("Cancel Queue")
                     .font(.system(size: 15, weight: .medium))
