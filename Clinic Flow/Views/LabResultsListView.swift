@@ -38,6 +38,8 @@ struct LabResultsListView: View {
                 }
             }
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
         .navigationDestination(item: $selectedResult) { result in
             LabResultDetailView(result: result)
         }
