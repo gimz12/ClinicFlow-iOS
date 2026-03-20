@@ -64,7 +64,11 @@ struct RoomNavigationView: View {
     var headerView: some View {
         HStack {
             Button(action: {
-                onNavigateToDashboard?()
+                if let callback = onNavigateToDashboard {
+                    callback()
+                } else {
+                    dismiss()
+                }
             }) {
                 HStack(spacing: 4) {
                     Image(systemName: "chevron.left")
@@ -543,7 +547,11 @@ struct RoomNavigationView: View {
         VStack(spacing: 12) {
             // Mark as Arrived button
             Button(action: {
-                onNavigateToDashboard?()
+                if let callback = onNavigateToDashboard {
+                    callback()
+                } else {
+                    dismiss()
+                }
             }) {
                 HStack(spacing: 8) {
                     Image(systemName: "checkmark")

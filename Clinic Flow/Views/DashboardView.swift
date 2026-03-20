@@ -70,7 +70,6 @@ struct DashboardView: View {
     @State private var showBookAppointment: Bool = false
     @State private var showAppointmentDetails: Bool = false
     @State private var showRescheduleAppointment: Bool = false
-    @State private var showNavigation: Bool = false
     @State private var showQueueStatus: Bool = false
     @State private var showRoomNavigation: Bool = false
 
@@ -122,7 +121,7 @@ struct DashboardView: View {
                 }
                 .tag(0)
 
-            IndoorNavigationView(onNavigateToDashboard: {
+            RoomNavigationView(onNavigateToDashboard: {
                 selectedTab = 0
             })
                 .tabItem {
@@ -130,7 +129,9 @@ struct DashboardView: View {
                 }
                 .tag(1)
 
-            Text("Progress")
+            QueueStatusView(onNavigateToDashboard: {
+                selectedTab = 0
+            })
                 .tabItem {
                     Label("Progress", systemImage: "chart.bar.fill")
                 }
@@ -157,6 +158,12 @@ struct DashboardView: View {
         }
         .ignoresSafeArea(edges: .top)
         .background(Color(.systemGroupedBackground))
+        .navigationDestination(isPresented: $showQueueStatus) {
+            QueueStatusView()
+        }
+        .navigationDestination(isPresented: $showRoomNavigation) {
+            RoomNavigationView()
+        }
         .overlay(alignment: .bottom) {
             // Bottom action bar (above tab bar)
             HStack(spacing: 32) {
@@ -460,9 +467,6 @@ struct DashboardView: View {
                     .background(Color.white)
                     .cornerRadius(10)
             }
-            .navigationDestination(isPresented: $showQueueStatus) {
-                QueueStatusView()
-            }
         }
         .padding(16)
         .background(navy)
@@ -519,33 +523,14 @@ struct DashboardView: View {
 
                         if item.status == .inProgress && item.title == "Consultation" {
                             Button("Navigate") {
-                                showNavigation = true
-                            }
-                                .font(.system(size: 12, weight: .semibold))
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 12)
-                                .padding(.vertical, 6)
-                                .background(navy)
-                                .cornerRadius(8)
-                                .navigationDestination(isPresented: $showNavigation) {
-                                    IndoorNavigationView(onNavigateToDashboard: {
-                                        showNavigation = false
-                                    })
-                                }
-                            Button(action: {
                                 showRoomNavigation = true
-                            }) {
-                                Text("Navigate")
-                                    .font(.system(size: 12, weight: .semibold))
-                                    .foregroundColor(.white)
-                                    .padding(.horizontal, 12)
-                                    .padding(.vertical, 6)
-                                    .background(navy)
-                                    .cornerRadius(8)
                             }
-                            .navigationDestination(isPresented: $showRoomNavigation) {
-                                RoomNavigationView()
-                            }
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 6)
+                            .background(navy)
+                            .cornerRadius(8)
                         }
                     }
                     .padding(.vertical, 10)
