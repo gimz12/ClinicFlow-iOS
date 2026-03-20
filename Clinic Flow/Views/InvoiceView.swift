@@ -112,13 +112,13 @@ struct InvoiceView: View {
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
         .navigationDestination(isPresented: $showShare) {
-            PlaceholderScreen(title: "Share Invoice")
+            InvoiceShareView()
         }
         .navigationDestination(isPresented: $showDownload) {
-            PlaceholderScreen(title: "Download Invoice")
+            InvoiceDownloadView()
         }
         .navigationDestination(isPresented: $showEmail) {
-            PlaceholderScreen(title: "Email Invoice")
+            InvoiceEmailView()
         }
     }
     
