@@ -25,6 +25,8 @@ struct ExpandedFloorPlanView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
     }
 
     private var header: some View {
