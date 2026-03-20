@@ -348,15 +348,19 @@ struct DashboardView: View {
                     HStack(spacing: 4) {
                         Image(systemName: "clock").font(.system(size: 12)).foregroundColor(.secondary)
                         Text(appt.time).font(.system(size: 13)).foregroundColor(.secondary)
-                    }
-                    HStack(spacing: 4) {
-                        Image(systemName: "person").font(.system(size: 12)).foregroundColor(.secondary)
-                        Text(appt.doctor).font(.system(size: 13)).foregroundColor(.secondary)
-                    }
-                    HStack(spacing: 4) {
-                        Image(systemName: "mappin").font(.system(size: 12)).foregroundColor(.secondary)
-                        Text(appt.location).font(.system(size: 13)).foregroundColor(.secondary)
-                    }
+                        if item.status == .inProgress && item.title == "Consultation" {
+                            NavigationLink {
+                                RoomNavigationView()
+                            } label: {
+                                Text("Navigate")
+                                    .font(.system(size: 12, weight: .semibold))
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 6)
+                                    .background(navy)
+                                    .cornerRadius(8)
+                            }
+                        }
                 }
                 Spacer()
             }
