@@ -60,7 +60,7 @@ struct ProfileView: View {
             BillingHistoryView()
         }
         .navigationDestination(isPresented: $showHelpSupport) {
-            PlaceholderView(title: "Help & Support")
+            HelpSupportView()
         }
         .navigationDestination(isPresented: $showAccessibility) {
             PlaceholderView(title: "Accessibility Settings")
