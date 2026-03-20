@@ -63,7 +63,7 @@ struct ProfileView: View {
             HelpSupportView()
         }
         .navigationDestination(isPresented: $showAccessibility) {
-            PlaceholderView(title: "Accessibility Settings")
+            AccessibilitySettingsView()
         }
         .navigationDestination(isPresented: $showNotifications) {
             PlaceholderView(title: "Notifications")
