@@ -69,7 +69,7 @@ struct ProfileView: View {
             PlaceholderView(title: "Notifications")
         }
         .navigationDestination(isPresented: $showLanguageRegion) {
-            PlaceholderView(title: "Language & Region")
+            LanguageRegionView()
         }
         .navigationDestination(isPresented: $showPrivacySecurity) {
             PlaceholderView(title: "Privacy & Security")
