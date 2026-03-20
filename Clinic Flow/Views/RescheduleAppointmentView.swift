@@ -348,7 +348,11 @@ struct RescheduleAppointmentView: View {
         VStack(spacing: 12) {
             // Confirm Reschedule button
             Button(action: {
-                onDismissToDashboard?()
+                if let callback = onDismissToDashboard {
+                    callback()
+                } else {
+                    dismiss()
+                }
             }) {
                 Text("Confirm Reschedule")
                     .font(.system(size: 16, weight: .semibold))
@@ -363,7 +367,11 @@ struct RescheduleAppointmentView: View {
             
             // Cancel button
             Button(action: {
-                onDismissToDashboard?()
+                if let callback = onDismissToDashboard {
+                    callback()
+                } else {
+                    dismiss()
+                }
             }) {
                 Text("Cancel")
                     .font(.system(size: 16, weight: .medium))

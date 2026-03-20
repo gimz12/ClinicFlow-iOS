@@ -136,7 +136,7 @@ struct DashboardView: View {
                 }
                 .tag(2)
 
-            Text("Profile")
+            ProfileView()
                 .tabItem {
                     Label("Profile", systemImage: "person.fill")
                 }
@@ -168,6 +168,16 @@ struct DashboardView: View {
             .padding(.vertical, 12)
             .background(.ultraThinMaterial)
             .opacity(0) // hidden — replaced by TabView tab bar
+        }
+        .navigationDestination(isPresented: $showAppointmentDetails) {
+            AppointmentDetailsView(onDismissToDashboard: {
+                showAppointmentDetails = false
+            })
+        }
+        .navigationDestination(isPresented: $showRescheduleAppointment) {
+            RescheduleAppointmentView(onDismissToDashboard: {
+                showRescheduleAppointment = false
+            })
         }
     }
 
@@ -383,25 +393,15 @@ struct DashboardView: View {
                     .padding(.vertical, 8)
                     .frame(maxWidth: .infinity)
                     .overlay(RoundedRectangle(cornerRadius: 8).stroke(navy, lineWidth: 1))
-                    .navigationDestination(isPresented: $showAppointmentDetails) {
-                        AppointmentDetailsView(onDismissToDashboard: {
-                            showAppointmentDetails = false
-                        })
-                    }
 
                 Button("Reschedule") {
                     showRescheduleAppointment = true
                 }
                     .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(.secondary)
+                    .foregroundColor(navy)
                     .padding(.vertical, 8)
                     .frame(maxWidth: .infinity)
-                    .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color(.systemGray4), lineWidth: 1))
-                    .navigationDestination(isPresented: $showRescheduleAppointment) {
-                        RescheduleAppointmentView(onDismissToDashboard: {
-                            showRescheduleAppointment = false
-                        })
-                    }
+                    .overlay(RoundedRectangle(cornerRadius: 8).stroke(navy.opacity(0.4), lineWidth: 1))
             }
         }
         .padding(16)
