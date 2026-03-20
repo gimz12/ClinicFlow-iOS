@@ -198,16 +198,16 @@ struct DashboardView: View {
             })
         }
         .navigationDestination(isPresented: $showRecords) {
-            PlaceholderScreen(title: "Medical Records")
+            MedicalRecordsView()
         }
         .navigationDestination(isPresented: $showAllSchedule) {
-            PlaceholderScreen(title: "Today's Schedule")
+            ScheduleListView()
         }
         .navigationDestination(isPresented: $showAllPrescriptions) {
-            PlaceholderScreen(title: "All Prescriptions")
+            PrescriptionsListView()
         }
         .navigationDestination(isPresented: $showAllLabResults) {
-            PlaceholderScreen(title: "All Lab Results")
+            LabResultsListView()
         }
         .navigationDestination(isPresented: $showRequestRefill) {
             PlaceholderScreen(title: "Request Refill")
