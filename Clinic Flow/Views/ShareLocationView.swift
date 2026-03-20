@@ -51,6 +51,8 @@ struct ShareLocationView: View {
                 Spacer()
             }
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
     }
 
     private var header: some View {
