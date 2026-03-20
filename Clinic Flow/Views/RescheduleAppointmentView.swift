@@ -7,6 +7,7 @@ struct RescheduleAppointmentView: View {
     @State private var selectedTimeSlot: String = ""
     @State private var rescheduleReason: String = ""
     @State private var showDatePicker: Bool = false
+    @State private var showHelpSupport: Bool = false
     
     private let navy = Color(red: 0.13, green: 0.27, blue: 0.40)
     private let lightBlue = Color(red: 0.88, green: 0.93, blue: 0.97)
@@ -94,6 +95,9 @@ struct RescheduleAppointmentView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
+        .navigationDestination(isPresented: $showHelpSupport) {
+            HelpSupportView()
+        }
     }
     
     // MARK: - Header
@@ -393,7 +397,7 @@ struct RescheduleAppointmentView: View {
                     .font(.system(size: 13))
                     .foregroundColor(.secondary)
                 Button("Contact reception") {
-                    // Contact action
+                    showHelpSupport = true
                 }
                 .font(.system(size: 13, weight: .semibold))
                 .foregroundColor(navy)

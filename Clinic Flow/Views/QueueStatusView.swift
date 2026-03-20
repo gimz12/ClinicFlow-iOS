@@ -23,6 +23,7 @@ struct QueueStatusView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showNavigation: Bool = false
     @State private var shouldDismissToDashboard: Bool = false
+    @State private var showSkipNext: Bool = false
 
     var onNavigateToDashboard: (() -> Void)? = nil
     
@@ -84,6 +85,9 @@ struct QueueStatusView: View {
                 showNavigation = false
                 shouldDismissToDashboard = true
             })
+        }
+        .navigationDestination(isPresented: $showSkipNext) {
+            PlaceholderScreen(title: "Skip to Next", message: "A staff member will confirm the next patient.")
         }
         .onChange(of: shouldDismissToDashboard) { _, newValue in
             if newValue {
@@ -456,7 +460,7 @@ var bottomButtons: some View {
 
             // Skip to Next
             Button(action: {
-                // Skip action
+                showSkipNext = true
             }) {
                 Text("Skip to Next")
                     .font(.system(size: 15, weight: .medium))

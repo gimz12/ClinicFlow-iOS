@@ -18,6 +18,7 @@ struct PaymentView: View {
     @State private var shouldDismissToDashboard: Bool = false
     @State private var showAddCard: Bool = false
     @State private var showPaymentMethods: Bool = false
+    @State private var showTerms: Bool = false
     
     private let navy = Color(red: 0.13, green: 0.27, blue: 0.40)
     private let lightBlue = Color(red: 0.88, green: 0.93, blue: 0.97)
@@ -111,6 +112,9 @@ struct PaymentView: View {
         .navigationBarHidden(true)
         .navigationDestination(isPresented: $showPaymentMethods) {
             PaymentMethodsView()
+        }
+        .navigationDestination(isPresented: $showTerms) {
+            PlaceholderScreen(title: "Terms of Service")
         }
         .onChange(of: shouldDismissToDashboard) { _, newValue in
             if newValue {
@@ -445,7 +449,7 @@ struct PaymentView: View {
                     .font(.system(size: 12))
                     .foregroundColor(.secondary)
                 Button("Terms of Service") {
-                    // Terms action
+                    showTerms = true
                 }
                 .font(.system(size: 12, weight: .semibold))
                 .foregroundColor(navy)

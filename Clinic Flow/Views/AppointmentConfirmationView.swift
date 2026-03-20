@@ -5,6 +5,7 @@ struct AppointmentConfirmationView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showFinalConfirmation: Bool = false
     @State private var shouldDismissToDashboard: Bool = false
+    @State private var showHelpSupport: Bool = false
     
     private let navy = Color(red: 0.13, green: 0.27, blue: 0.40)
     private let lightBlue = Color(red: 0.88, green: 0.93, blue: 0.97)
@@ -73,6 +74,9 @@ struct AppointmentConfirmationView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
+        .navigationDestination(isPresented: $showHelpSupport) {
+            HelpSupportView()
+        }
         .onChange(of: shouldDismissToDashboard) { _, newValue in
             if newValue {
                 if let callback = onDismissToDashboard {
@@ -299,7 +303,7 @@ struct AppointmentConfirmationView: View {
                     .font(.system(size: 13))
                     .foregroundColor(.secondary)
                 Button("Contact reception") {
-                    // Contact action
+                    showHelpSupport = true
                 }
                 .font(.system(size: 13, weight: .semibold))
                 .foregroundColor(navy)

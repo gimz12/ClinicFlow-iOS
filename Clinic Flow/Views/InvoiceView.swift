@@ -3,6 +3,10 @@ import SwiftUI
 // MARK: - Invoice View
 struct InvoiceView: View {
     @Environment(\.dismiss) private var dismiss
+
+    @State private var showShare: Bool = false
+    @State private var showDownload: Bool = false
+    @State private var showEmail: Bool = false
     
     private let navy = Color(red: 0.13, green: 0.27, blue: 0.40)
     private let lightBlue = Color(red: 0.88, green: 0.93, blue: 0.97)
@@ -107,6 +111,15 @@ struct InvoiceView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
+        .navigationDestination(isPresented: $showShare) {
+            PlaceholderScreen(title: "Share Invoice")
+        }
+        .navigationDestination(isPresented: $showDownload) {
+            PlaceholderScreen(title: "Download Invoice")
+        }
+        .navigationDestination(isPresented: $showEmail) {
+            PlaceholderScreen(title: "Email Invoice")
+        }
     }
     
     // MARK: - Header
@@ -132,7 +145,7 @@ struct InvoiceView: View {
             Spacer()
             
             Button(action: {
-                // Share action
+                showShare = true
             }) {
                 Image(systemName: "square.and.arrow.up")
                     .font(.system(size: 18))
@@ -419,7 +432,7 @@ struct InvoiceView: View {
         VStack(spacing: 12) {
             // Download PDF button
             Button(action: {
-                // Download PDF action
+                showDownload = true
             }) {
                 Text("Download PDF")
                     .font(.system(size: 16, weight: .semibold))
@@ -433,7 +446,7 @@ struct InvoiceView: View {
             
             // Email Invoice button
             Button(action: {
-                // Email invoice action
+                showEmail = true
             }) {
                 Text("Email Invoice")
                     .font(.system(size: 16, weight: .medium))

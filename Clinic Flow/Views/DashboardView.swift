@@ -72,9 +72,14 @@ struct DashboardView: View {
     @State private var showRescheduleAppointment: Bool = false
     @State private var showNotifications: Bool = false
     @State private var hasUnreadNotifications: Bool = true
-    @State private var showNavigation: Bool = false
     @State private var showQueueStatus: Bool = false
     @State private var showRoomNavigation: Bool = false
+    @State private var showRecords: Bool = false
+    @State private var showAllSchedule: Bool = false
+    @State private var showAllPrescriptions: Bool = false
+    @State private var showAllLabResults: Bool = false
+    @State private var showRequestRefill: Bool = false
+    @State private var showLabDownload: Bool = false
 
     let appointments: [Appointment] = [
         Appointment(month: "FEB", day: 28, dayName: "Thu",
@@ -140,7 +145,9 @@ struct DashboardView: View {
                 }
                 .tag(2)
 
-            ProfileView()
+            ProfileView(onNavigateToDashboard: {
+                selectedTab = 0
+            })
                 .tabItem {
                     Label("Profile", systemImage: "person.fill")
                 }
@@ -188,6 +195,24 @@ struct DashboardView: View {
             RescheduleAppointmentView(onDismissToDashboard: {
                 showRescheduleAppointment = false
             })
+        }
+        .navigationDestination(isPresented: $showRecords) {
+            PlaceholderScreen(title: "Medical Records")
+        }
+        .navigationDestination(isPresented: $showAllSchedule) {
+            PlaceholderScreen(title: "Today's Schedule")
+        }
+        .navigationDestination(isPresented: $showAllPrescriptions) {
+            PlaceholderScreen(title: "All Prescriptions")
+        }
+        .navigationDestination(isPresented: $showAllLabResults) {
+            PlaceholderScreen(title: "All Lab Results")
+        }
+        .navigationDestination(isPresented: $showRequestRefill) {
+            PlaceholderScreen(title: "Request Refill")
+        }
+        .navigationDestination(isPresented: $showLabDownload) {
+            PlaceholderScreen(title: "Lab Result Download")
         }
         .navigationDestination(isPresented: $showNotifications) {
             NotificationsView(hasUnreadNotifications: $hasUnreadNotifications)
@@ -314,7 +339,9 @@ struct DashboardView: View {
                     .font(.system(size: 13))
                     .foregroundColor(.secondary)
                 Spacer()
-                Button("Records >") {}
+                Button("Records >") {
+                    showRecords = true
+                }
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundColor(navy)
             }
@@ -508,7 +535,9 @@ struct DashboardView: View {
                 Text("Today's Schedule")
                     .font(.system(size: 17, weight: .bold))
                 Spacer()
-                Button("View All") {}
+                Button("View All") {
+                    showAllSchedule = true
+                }
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundColor(navy)
             }
@@ -617,7 +646,9 @@ struct DashboardView: View {
                 Text("Active Prescriptions")
                     .font(.system(size: 17, weight: .bold))
                 Spacer()
-                Button("View All") {}
+                Button("View All") {
+                    showAllPrescriptions = true
+                }
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundColor(navy)
             }
@@ -677,7 +708,9 @@ struct DashboardView: View {
                 .font(.system(size: 13))
                 .foregroundColor(.secondary)
 
-            Button("Request Refill") {}
+            Button("Request Refill") {
+                showRequestRefill = true
+            }
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundColor(navy)
                 .frame(maxWidth: .infinity)
@@ -697,7 +730,9 @@ struct DashboardView: View {
                 Text("Recent Lab Results")
                     .font(.system(size: 17, weight: .bold))
                 Spacer()
-                Button("View All") {}
+                Button("View All") {
+                    showAllLabResults = true
+                }
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundColor(navy)
             }
@@ -738,7 +773,9 @@ struct DashboardView: View {
                         }
 
                         if result.hasDownload {
-                            Button("Download") {}
+                            Button("Download") {
+                                showLabDownload = true
+                            }
                                 .font(.system(size: 12, weight: .semibold))
                                 .foregroundColor(navy)
                         }
@@ -768,7 +805,7 @@ struct DashboardView: View {
                 .font(.system(size: 17, weight: .bold))
 
             Button {
-                // Start new visit
+                showBookAppointment = true
             } label: {
                 HStack(spacing: 12) {
                     ZStack {

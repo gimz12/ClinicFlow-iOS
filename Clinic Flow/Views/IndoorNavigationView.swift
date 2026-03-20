@@ -13,6 +13,11 @@ struct IndoorDirectionStep: Identifiable {
 // MARK: - Indoor Navigation View
 struct IndoorNavigationView: View {
     @Environment(\.dismiss) private var dismiss
+
+    @State private var showExpand: Bool = false
+    @State private var showShareLocation: Bool = false
+    @State private var showARView: Bool = false
+    @State private var showVoiceDirections: Bool = false
     
     private let navy = Color(red: 0.13, green: 0.27, blue: 0.40)
     private let lightBlue = Color(red: 0.88, green: 0.93, blue: 0.97)
@@ -75,6 +80,18 @@ struct IndoorNavigationView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
+        .navigationDestination(isPresented: $showExpand) {
+            PlaceholderScreen(title: "Expanded Floor Plan")
+        }
+        .navigationDestination(isPresented: $showShareLocation) {
+            PlaceholderScreen(title: "Share Location")
+        }
+        .navigationDestination(isPresented: $showARView) {
+            PlaceholderScreen(title: "AR View")
+        }
+        .navigationDestination(isPresented: $showVoiceDirections) {
+            PlaceholderScreen(title: "Voice Directions")
+        }
     }
     
     // MARK: - Header
@@ -193,7 +210,7 @@ struct IndoorNavigationView: View {
                     .font(.system(size: 16, weight: .semibold))
                 Spacer()
                 Button(action: {
-                    // Expand floor plan
+                    showExpand = true
                 }) {
                     HStack(spacing: 4) {
                         Image(systemName: "rectangle.expand.vertical")
@@ -462,7 +479,7 @@ struct IndoorNavigationView: View {
         HStack(spacing: 12) {
             // Share Location
             Button(action: {
-                // Share location action
+                showShareLocation = true
             }) {
                 VStack(spacing: 8) {
                     ZStack {
@@ -492,7 +509,7 @@ struct IndoorNavigationView: View {
             
             // AR View
             Button(action: {
-                // AR View action
+                showARView = true
             }) {
                 VStack(spacing: 8) {
                     ZStack {
@@ -549,7 +566,7 @@ struct IndoorNavigationView: View {
             
             // Voice Directions
             Button(action: {
-                // Voice directions action
+                showVoiceDirections = true
             }) {
                 HStack(spacing: 6) {
                     Image(systemName: "waveform.circle")

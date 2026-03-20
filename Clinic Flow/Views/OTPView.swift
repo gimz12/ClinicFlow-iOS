@@ -8,6 +8,7 @@ struct OTPView: View {
     @State private var secondsRemaining: Int = 165
     @State private var timer: Timer? = nil
     @State private var navigateToDashboard: Bool = false
+    @State private var showHelpSupport: Bool = false
     @Environment(\.dismiss) private var dismiss
 
     var formattedTime: String {
@@ -123,7 +124,9 @@ struct OTPView: View {
                     HStack(spacing: 4) {
                         Text("Need assistance?")
                             .foregroundColor(.secondary)
-                        Button("Contact reception") {}
+                        Button("Contact reception") {
+                            showHelpSupport = true
+                        }
                             .fontWeight(.semibold)
                             .foregroundColor(authNavy)
                     }
@@ -139,6 +142,9 @@ struct OTPView: View {
         .navigationBarBackButtonHidden(true)
         .navigationDestination(isPresented: $navigateToDashboard) {
             DashboardView()
+        }
+        .navigationDestination(isPresented: $showHelpSupport) {
+            HelpSupportView()
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
