@@ -5,7 +5,7 @@ struct ProfileView: View {
     var onNavigateToDashboard: (() -> Void)? = nil
 
     @State private var showEditProfile: Bool = false
-    @State private var showPaymentMethods: Bool = false
+    @State private var showPaymentSettings: Bool = false
     @State private var showBillingHistory: Bool = false
     @State private var showHelpSupport: Bool = false
     @State private var showAccessibility: Bool = false
@@ -61,8 +61,8 @@ struct ProfileView: View {
         .navigationDestination(isPresented: $showEditProfile) {
             EditProfileView()
         }
-        .navigationDestination(isPresented: $showPaymentMethods) {
-            PaymentMethodsView()
+        .navigationDestination(isPresented: $showPaymentSettings) {
+            PaymentSettingsOverviewView()
         }
         .navigationDestination(isPresented: $showBillingHistory) {
             BillingHistoryView()
@@ -199,7 +199,7 @@ struct ProfileView: View {
                 icon: "creditcard",
                 iconColor: .blue,
                 iconBackground: Color.blue.opacity(0.1),
-                action: { showPaymentMethods = true }
+                action: { showPaymentSettings = true }
             )
 
             actionRow(

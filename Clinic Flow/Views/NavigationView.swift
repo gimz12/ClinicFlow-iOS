@@ -68,16 +68,16 @@ struct RoomNavigationView: View {
             PlaceholderScreen(title: "External Navigation")
         }
         .navigationDestination(isPresented: $showExpandFloorPlan) {
-            PlaceholderScreen(title: "Expanded Floor Plan")
+            ExpandedFloorPlanView()
         }
         .navigationDestination(isPresented: $showShareLocation) {
-            PlaceholderScreen(title: "Share Location")
+            ShareLocationView()
         }
         .navigationDestination(isPresented: $showARView) {
-            PlaceholderScreen(title: "AR View")
+            ARNavigationView()
         }
         .navigationDestination(isPresented: $showVoiceDirections) {
-            PlaceholderScreen(title: "Voice Directions")
+            VoiceDirectionsView()
         }
     }
     

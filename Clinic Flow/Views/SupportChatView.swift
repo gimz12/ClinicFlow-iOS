@@ -26,6 +26,8 @@ struct SupportChatView: View {
                 messageBar
             }
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
     }
 
     private var header: some View {

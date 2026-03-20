@@ -76,6 +76,8 @@ struct HelpSupportView: View {
                 }
             }
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
         .navigationDestination(isPresented: $showQueueStatus) {
             QueueStatusView()
         }

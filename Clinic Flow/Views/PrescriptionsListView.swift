@@ -42,6 +42,8 @@ struct PrescriptionsListView: View {
         .navigationDestination(item: $selectedPrescription) { rx in
             PrescriptionRefillView(prescription: rx)
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
     }
 
     private var header: some View {

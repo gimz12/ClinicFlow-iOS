@@ -81,16 +81,16 @@ struct IndoorNavigationView: View {
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
         .navigationDestination(isPresented: $showExpand) {
-            PlaceholderScreen(title: "Expanded Floor Plan")
+            ExpandedFloorPlanView()
         }
         .navigationDestination(isPresented: $showShareLocation) {
-            PlaceholderScreen(title: "Share Location")
+            ShareLocationView()
         }
         .navigationDestination(isPresented: $showARView) {
-            PlaceholderScreen(title: "AR View")
+            ARNavigationView()
         }
         .navigationDestination(isPresented: $showVoiceDirections) {
-            PlaceholderScreen(title: "Voice Directions")
+            VoiceDirectionsView()
         }
     }
     
