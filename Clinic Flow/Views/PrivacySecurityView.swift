@@ -3,11 +3,11 @@ import SwiftUI
 struct PrivacySecurityView: View {
     @Environment(\.dismiss) private var dismiss
 
-    @State private var biometricLogin: Bool = true
-    @State private var sessionTimeout: Bool = true
-    @State private var dataSharing: Bool = false
-    @State private var personalizedRecommendations: Bool = true
-    @State private var activityLogs: Bool = true
+    @AppStorage("privacy_biometricLogin") private var biometricLogin: Bool = true
+    @AppStorage("privacy_sessionTimeout") private var sessionTimeout: Bool = true
+    @AppStorage("privacy_dataSharing") private var dataSharing: Bool = false
+    @AppStorage("privacy_personalizedRecommendations") private var personalizedRecommendations: Bool = true
+    @AppStorage("privacy_activityLogs") private var activityLogs: Bool = true
 
     private let navy = Color(red: 0.10, green: 0.30, blue: 0.42)
     private let lightCard = Color(.systemBackground)
