@@ -2,10 +2,52 @@ import SwiftUI
 
 struct HelpSupportView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
     @State private var showQueueStatus: Bool = false
+    @State private var showChat: Bool = false
+    @State private var selectedFAQ: FAQItem? = nil
 
     private let navy = Color(red: 0.10, green: 0.30, blue: 0.42)
     private let lightCard = Color(.systemBackground)
+
+    private let faqs: [FAQItem] = [
+        FAQItem(
+            question: "How do I reschedule an appointment?",
+            answer: "Open your appointment details, then choose Reschedule to pick a new time slot.",
+            steps: [
+                "Go to Home and tap View Details on your appointment.",
+                "Select Reschedule.",
+                "Choose a new date and time, then confirm."
+            ]
+        ),
+        FAQItem(
+            question: "Where can I view my billing history?",
+            answer: "Billing history is available under Profile > Billing History.",
+            steps: [
+                "Open Profile tab.",
+                "Tap Billing History.",
+                "Select a statement to view details."
+            ]
+        ),
+        FAQItem(
+            question: "How do I update my personal details?",
+            answer: "Use Edit Profile to update your name, contact info, and insurance details.",
+            steps: [
+                "Open Profile tab.",
+                "Tap Edit on the top right.",
+                "Update your details and save."
+            ]
+        ),
+        FAQItem(
+            question: "How do I get directions to my room?",
+            answer: "Use the Navigate tab or the Navigate button in your schedule card.",
+            steps: [
+                "Open the Navigate tab.",
+                "Follow the step-by-step route.",
+                "Tap Arrived when you reach your room."
+            ]
+        )
+    ]
 
     var body: some View {
         ZStack {
@@ -36,6 +78,12 @@ struct HelpSupportView: View {
         }
         .navigationDestination(isPresented: $showQueueStatus) {
             QueueStatusView()
+        }
+        .navigationDestination(isPresented: $showChat) {
+            SupportChatView()
+        }
+        .navigationDestination(item: $selectedFAQ) { faq in
+            FAQDetailView(faq: faq)
         }
     }
 
@@ -107,34 +155,42 @@ struct HelpSupportView: View {
                 title: "Call",
                 subtitle: "24/7",
                 icon: "phone.fill",
-                tint: .green
+                tint: .green,
+                action: {
+                    openURL(URL(string: "tel://+15551234567")!)
+                }
             )
 
             contactOptionCard(
                 title: "Live Chat",
                 subtitle: "2 min",
                 icon: "message.fill",
-                tint: .blue
+                tint: .blue,
+                action: {
+                    showChat = true
+                }
             )
 
             contactOptionCard(
                 title: "Email",
                 subtitle: "Within 1 hr",
                 icon: "envelope.fill",
-                tint: .orange
+                tint: .orange,
+                action: {
+                    openURL(URL(string: "mailto:support@clinicflow.com")!)
+                }
             )
         }
     }
 
     private var faqSection: some View {
         VStack(spacing: 0) {
-            faqRow("How do I reschedule an appointment?")
-            Divider().padding(.leading, 16)
-            faqRow("Where can I view my billing history?")
-            Divider().padding(.leading, 16)
-            faqRow("How do I update my personal details?")
-            Divider().padding(.leading, 16)
-            faqRow("How do I get directions to my room?")
+            ForEach(faqs.indices, id: \.self) { index in
+                faqRow(faqs[index])
+                if index < faqs.count - 1 {
+                    Divider().padding(.leading, 16)
+                }
+            }
         }
         .padding(.vertical, 4)
         .background(lightCard)
@@ -180,8 +236,8 @@ struct HelpSupportView: View {
         )
     }
 
-    private func contactOptionCard(title: String, subtitle: String, icon: String, tint: Color) -> some View {
-        Button(action: {}) {
+    private func contactOptionCard(title: String, subtitle: String, icon: String, tint: Color, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
             VStack(spacing: 8) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 12)
@@ -212,10 +268,12 @@ struct HelpSupportView: View {
         .buttonStyle(.plain)
     }
 
-    private func faqRow(_ title: String) -> some View {
-        Button(action: {}) {
+    private func faqRow(_ faq: FAQItem) -> some View {
+        Button(action: {
+            selectedFAQ = faq
+        }) {
             HStack {
-                Text(title)
+                Text(faq.question)
                     .font(.system(size: 15, weight: .medium))
                     .foregroundColor(.primary)
                 Spacer()

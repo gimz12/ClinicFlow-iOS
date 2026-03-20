@@ -3,11 +3,11 @@ import SwiftUI
 struct LanguageRegionView: View {
     @Environment(\.dismiss) private var dismiss
 
-    @State private var selectedLanguage: String = "English"
-    @State private var selectedRegion: String = "United States"
-    @State private var useDeviceSettings: Bool = true
-    @State private var timeFormat24h: Bool = false
-    @State private var weekStartsMonday: Bool = false
+    @AppStorage("lang_selectedLanguage") private var selectedLanguage: String = "English"
+    @AppStorage("lang_selectedRegion") private var selectedRegion: String = "United States"
+    @AppStorage("lang_useDeviceSettings") private var useDeviceSettings: Bool = true
+    @AppStorage("lang_timeFormat24h") private var timeFormat24h: Bool = false
+    @AppStorage("lang_weekStartsMonday") private var weekStartsMonday: Bool = false
 
     private let navy = Color(red: 0.10, green: 0.30, blue: 0.42)
     private let lightCard = Color(.systemBackground)

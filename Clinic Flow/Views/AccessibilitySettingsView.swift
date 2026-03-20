@@ -3,11 +3,11 @@ import SwiftUI
 struct AccessibilitySettingsView: View {
     @Environment(\.dismiss) private var dismiss
 
-    @State private var textSize: Double = 1
-    @State private var highContrast: Bool = false
-    @State private var reduceMotion: Bool = false
-    @State private var screenReaderHints: Bool = true
-    @State private var haptics: Bool = true
+    @AppStorage("access_textSize") private var textSize: Double = 1
+    @AppStorage("access_highContrast") private var highContrast: Bool = false
+    @AppStorage("access_reduceMotion") private var reduceMotion: Bool = false
+    @AppStorage("access_screenReaderHints") private var screenReaderHints: Bool = true
+    @AppStorage("access_haptics") private var haptics: Bool = true
 
     private let navy = Color(red: 0.10, green: 0.30, blue: 0.42)
     private let lightCard = Color(.systemBackground)
