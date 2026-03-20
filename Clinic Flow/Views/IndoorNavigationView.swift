@@ -1,7 +1,7 @@
 import SwiftUI
 
 // MARK: - Direction Step Model
-struct DirectionStep: Identifiable {
+struct IndoorDirectionStep: Identifiable {
     let id = UUID()
     let stepNumber: Int
     let title: String
@@ -28,11 +28,11 @@ struct IndoorNavigationView: View {
     let estimatedTime: String = "2min"
     
     // Direction steps
-    let directionSteps: [DirectionStep] = [
-        DirectionStep(stepNumber: 1, title: "Take the elevator to 2nd floor", subtitle: "From your current position", distance: "30m", isCompleted: false),
-        DirectionStep(stepNumber: 2, title: "Turn right from elevator", subtitle: "Head towards East Wing", distance: "50m", isCompleted: false),
-        DirectionStep(stepNumber: 3, title: "Continue along main corridor", subtitle: "Pass rooms A-205, A-203", distance: "60m", isCompleted: false),
-        DirectionStep(stepNumber: 4, title: "Arrive at Room A-201", subtitle: "On your right side", distance: "10m", isCompleted: true)
+    let directionSteps: [IndoorDirectionStep] = [
+        IndoorDirectionStep(stepNumber: 1, title: "Take the elevator to 2nd floor", subtitle: "From your current position", distance: "30m", isCompleted: false),
+        IndoorDirectionStep(stepNumber: 2, title: "Turn right from elevator", subtitle: "Head towards East Wing", distance: "50m", isCompleted: false),
+        IndoorDirectionStep(stepNumber: 3, title: "Continue along main corridor", subtitle: "Pass rooms A-205, A-203", distance: "60m", isCompleted: false),
+        IndoorDirectionStep(stepNumber: 4, title: "Arrive at Room A-201", subtitle: "On your right side", distance: "10m", isCompleted: true)
     ]
     
     var body: some View {
