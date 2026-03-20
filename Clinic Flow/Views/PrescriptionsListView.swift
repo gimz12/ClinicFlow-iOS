@@ -4,6 +4,7 @@ struct PrescriptionsListView: View {
     @Environment(\.dismiss) private var dismiss
 
     private let navy = Color(red: 0.10, green: 0.30, blue: 0.42)
+    @State private var selectedPrescription: Prescription? = nil
 
     private let prescriptions: [Prescription] = [
         Prescription(name: "Lisinopril", dosage: "10mg", frequency: "Once daily",
@@ -37,6 +38,9 @@ struct PrescriptionsListView: View {
                     .padding(16)
                 }
             }
+        }
+        .navigationDestination(item: $selectedPrescription) { rx in
+            PrescriptionRefillView(prescription: rx)
         }
     }
 
@@ -100,6 +104,18 @@ struct PrescriptionsListView: View {
 
                 ProgressView(value: rx.supplyPercent)
                     .tint(rx.color)
+            }
+
+            Button(action: { selectedPrescription = rx }) {
+                Text("Request Refill")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(navy)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 10)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(navy, lineWidth: 1)
+                    )
             }
         }
         .padding(14)

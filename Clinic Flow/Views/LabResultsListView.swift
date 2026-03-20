@@ -4,6 +4,7 @@ struct LabResultsListView: View {
     @Environment(\.dismiss) private var dismiss
 
     private let navy = Color(red: 0.10, green: 0.30, blue: 0.42)
+    @State private var selectedResult: LabResult? = nil
 
     private var results: [LabResult] {
         [
@@ -36,6 +37,9 @@ struct LabResultsListView: View {
                     .padding(16)
                 }
             }
+        }
+        .navigationDestination(item: $selectedResult) { result in
+            LabResultDetailView(result: result)
         }
     }
 
@@ -87,9 +91,12 @@ struct LabResultsListView: View {
             Spacer()
 
             if result.hasDownload {
-                Image(systemName: "arrow.down.circle")
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(navy)
+                Button(action: { selectedResult = result }) {
+                    Image(systemName: "arrow.down.circle")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundColor(navy)
+                }
+                .buttonStyle(.plain)
             } else {
                 Text(result.status)
                     .font(.system(size: 12, weight: .semibold))
@@ -103,6 +110,10 @@ struct LabResultsListView: View {
             RoundedRectangle(cornerRadius: 14)
                 .stroke(Color(.systemGray5), lineWidth: 1)
         )
+        .contentShape(Rectangle())
+        .onTapGesture {
+            selectedResult = result
+        }
     }
 }
 
