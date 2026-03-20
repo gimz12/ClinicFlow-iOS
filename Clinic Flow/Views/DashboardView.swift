@@ -70,6 +70,8 @@ struct DashboardView: View {
     @State private var showBookAppointment: Bool = false
     @State private var showAppointmentDetails: Bool = false
     @State private var showRescheduleAppointment: Bool = false
+    @State private var showNotifications: Bool = false
+    @State private var hasUnreadNotifications: Bool = true
     @State private var showQueueStatus: Bool = false
     @State private var showRoomNavigation: Bool = false
     @State private var showRecords: Bool = false
@@ -212,6 +214,9 @@ struct DashboardView: View {
         .navigationDestination(isPresented: $showLabDownload) {
             PlaceholderScreen(title: "Lab Result Download")
         }
+        .navigationDestination(isPresented: $showNotifications) {
+            NotificationsView(hasUnreadNotifications: $hasUnreadNotifications)
+        }
     }
 
     // MARK: - Header
@@ -250,20 +255,28 @@ struct DashboardView: View {
                 Spacer()
                 HStack {
                     Spacer()
-                    ZStack(alignment: .topTrailing) {
-                        Circle()
-                            .fill(Color.white.opacity(0.2))
-                            .frame(width: 38, height: 38)
-                            .overlay(
-                                Image(systemName: "bell.fill")
-                                    .foregroundColor(.white)
-                                    .font(.system(size: 16))
-                            )
-                        Circle()
-                            .fill(Color.red)
-                            .frame(width: 10, height: 10)
-                            .offset(x: 2, y: -2)
+                    Button(action: {
+                        showNotifications = true
+                    }) {
+                        ZStack(alignment: .topTrailing) {
+                            Circle()
+                                .fill(Color.white.opacity(0.2))
+                                .frame(width: 38, height: 38)
+                                .overlay(
+                                    Image(systemName: "bell.fill")
+                                        .foregroundColor(.white)
+                                        .font(.system(size: 16))
+                                )
+
+                            if hasUnreadNotifications {
+                                Circle()
+                                    .fill(Color.red)
+                                    .frame(width: 10, height: 10)
+                                    .offset(x: 2, y: -2)
+                            }
+                        }
                     }
+                    .buttonStyle(.plain)
                 }
                 .padding(.trailing, 20)
                 .padding(.bottom, 20)
