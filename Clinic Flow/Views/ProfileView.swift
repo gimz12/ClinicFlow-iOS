@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ProfileView: View {
     @Environment(\.dismiss) private var dismiss
+    var onNavigateToDashboard: (() -> Void)? = nil
 
     @State private var showEditProfile: Bool = false
     @State private var showPaymentMethods: Bool = false
@@ -80,7 +81,11 @@ struct ProfileView: View {
     private var header: some View {
         HStack {
             Button(action: {
-                dismiss()
+                if let callback = onNavigateToDashboard {
+                    callback()
+                } else {
+                    dismiss()
+                }
             }) {
                 HStack(spacing: 6) {
                     Image(systemName: "chevron.left")

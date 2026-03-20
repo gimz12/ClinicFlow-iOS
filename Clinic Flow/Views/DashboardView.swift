@@ -137,7 +137,9 @@ struct DashboardView: View {
                 }
                 .tag(2)
 
-            ProfileView()
+            ProfileView(onNavigateToDashboard: {
+                selectedTab = 0
+            })
                 .tabItem {
                     Label("Profile", systemImage: "person.fill")
                 }
