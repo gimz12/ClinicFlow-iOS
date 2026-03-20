@@ -70,7 +70,6 @@ struct DashboardView: View {
     @State private var showBookAppointment: Bool = false
     @State private var showAppointmentDetails: Bool = false
     @State private var showRescheduleAppointment: Bool = false
-    @State private var showNavigation: Bool = false
     @State private var showQueueStatus: Bool = false
     @State private var showRoomNavigation: Bool = false
 
@@ -122,13 +121,17 @@ struct DashboardView: View {
                 }
                 .tag(0)
 
-            RoomNavigationView()
+            RoomNavigationView(onNavigateToDashboard: {
+                selectedTab = 0
+            })
                 .tabItem {
                     Label("Navigate", systemImage: "location.fill")
                 }
                 .tag(1)
 
-            QueueStatusView()
+            QueueStatusView(onNavigateToDashboard: {
+                selectedTab = 0
+            })
                 .tabItem {
                     Label("Progress", systemImage: "chart.bar.fill")
                 }
@@ -520,30 +523,14 @@ struct DashboardView: View {
 
                         if item.status == .inProgress && item.title == "Consultation" {
                             Button("Navigate") {
-                                showNavigation = true
-                            }
-                                .font(.system(size: 12, weight: .semibold))
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 12)
-                                .padding(.vertical, 6)
-                                .background(navy)
-                                .cornerRadius(8)
-                                .navigationDestination(isPresented: $showNavigation) {
-                                    IndoorNavigationView(onNavigateToDashboard: {
-                                        showNavigation = false
-                                    })
-                                }
-                            Button(action: {
                                 showRoomNavigation = true
-                            }) {
-                                Text("Navigate")
-                                    .font(.system(size: 12, weight: .semibold))
-                                    .foregroundColor(.white)
-                                    .padding(.horizontal, 12)
-                                    .padding(.vertical, 6)
-                                    .background(navy)
-                                    .cornerRadius(8)
                             }
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 6)
+                            .background(navy)
+                            .cornerRadius(8)
                         }
                     }
                     .padding(.vertical, 10)
